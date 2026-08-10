@@ -1,0 +1,66 @@
+Cadence Genus(TM) Synthesis Solution.
+Copyright 2022 Cadence Design Systems, Inc. All rights reserved worldwide.
+Cadence and the Cadence logo are registered trademarks and Genus is a trademark
+of Cadence Design Systems, Inc. in the United States and other countries.
+
+[15:25:58.022482] Configured Lic search path (21.01-s002): 5280@c2s.cdacb.in:1717@c2s.cdacb.in
+
+Version: 21.14-s082_1, built Thu Jun 23 02:02:08 PDT 2022
+Options: -batch -files script.tcl 
+Date:    Fri Jul 31 15:25:59 2026
+Host:    smartlab6.calicut.nielit.in (x86_64 w/Linux 4.18.0-553.33.1.el8_10.x86_64) (18cores*36cpus*1physical cpu*Intel(R) Xeon(R) W-2295 CPU @ 3.00GHz 25344KB) (131199144KB)
+PID:     104044
+OS:      Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+Checkout succeeded: Genus_Synthesis/3FFB3787901511A9760E
+	License file: 5280@c2s.cdacb.in
+	License Server: 5280@c2s.cdacb.in
+
+[15:26:00.470266] Periodic Lic check successful
+[15:26:00.470272] Feature usage summary:
+[15:26:00.470273] Genus_Synthesis
+Checking out license: Genus_Synthesis
+
+
+***********************************************************************************************************
+***********************************************************************************************************
+
+
+
+Loading tool scripts...WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+
+Finished loading tool scripts (6 seconds elapsed).
+
+#@ Processing -files option
+@genus 1> source script.tcl
+#@ Begin verbose source ./script.tcl
+@file(script.tcl) 1: puts "Before"
+Before
+@file(script.tcl) 2: read_hdl -help
+  read_hdl: reads in Verilog or VHDL files 
+
+Usage: read_hdl [-language <string>] [-library <string>] [-netlist] [-define <string>]+ [<string>+] [-f <string>]
+
+    [-language <string>]:
+        specifies the language of HDL files 
+    [-library <string>]:
+        specifies the name of a VHDL or Verilog library 
+    [-netlist]:
+        specifies that HDL files conform to structural Verilog-1995 and is intended to be used in mixed input elaboration mode 
+    [-define <string>]:
+        defines Verilog macro 
+    [<string>+]:
+        the name of the HDL files to read 
+    [-f <string>]:
+        the name of list file for reading files from simulation environment 
+@file(script.tcl) 3: puts "After"
+After
+#@ End verbose source ./script.tcl
+
+Lic Summary:
+[15:26:06.350280] Cdslmd servers: cadence-c2s
+[15:26:06.350291] Feature usage summary:
+[15:26:06.350291] Genus_Synthesis
+

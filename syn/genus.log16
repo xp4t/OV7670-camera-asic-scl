@@ -1,0 +1,73 @@
+Cadence Genus(TM) Synthesis Solution.
+Copyright 2022 Cadence Design Systems, Inc. All rights reserved worldwide.
+Cadence and the Cadence logo are registered trademarks and Genus is a trademark
+of Cadence Design Systems, Inc. in the United States and other countries.
+
+[09:17:02.022426] Configured Lic search path (21.01-s002): 5280@c2s.cdacb.in:1717@c2s.cdacb.in
+
+Version: 21.14-s082_1, built Thu Jun 23 02:02:08 PDT 2022
+Options: -batch -files sweep_E2.tcl 
+Date:    Thu Aug 06 09:17:02 2026
+Host:    smartlab6.calicut.nielit.in (x86_64 w/Linux 4.18.0-553.33.1.el8_10.x86_64) (18cores*36cpus*1physical cpu*Intel(R) Xeon(R) W-2295 CPU @ 3.00GHz 25344KB) (131199124KB)
+PID:     15019
+OS:      Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+Checkout succeeded: Genus_Synthesis/3FFB3787901511A9760E
+	License file: 5280@c2s.cdacb.in
+	License Server: 5280@c2s.cdacb.in
+
+[09:17:03.418216] Periodic Lic check successful
+[09:17:03.418226] Feature usage summary:
+[09:17:03.418227] Genus_Synthesis
+Checking out license: Genus_Synthesis
+
+
+***********************************************************************************************************
+***********************************************************************************************************
+
+
+
+Loading tool scripts...WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+
+Finished loading tool scripts (6 seconds elapsed).
+
+#@ Processing -files option
+@genus 1> source sweep_E2.tcl
+#@ Begin verbose source ./sweep_E2.tcl
+@file(sweep_E2.tcl) 6: set EXPERIMENT    "E2_higheffort_40MHz"
+@file(sweep_E2.tcl) 7: set DESIGN_NAME   "top"
+@file(sweep_E2.tcl) 8: set RTL_ROOT      "../../rtl"
+@file(sweep_E2.tcl) 9: set LIB_ROOT      "../../lib"
+@file(sweep_E2.tcl) 10: set LEF_ROOT      "../../lef"
+@file(sweep_E2.tcl) 11: set OUT_DIR       "sweep/E2"
+@file(sweep_E2.tcl) 12: set REPORT_DIR    "sweep/E2"
+@file(sweep_E2.tcl) 13: set CONSTRAINTS_FILE "../../constraints.sdc"
+@file(sweep_E2.tcl) 14: file mkdir $OUT_DIR
+@file(sweep_E2.tcl) 16: set LIB_TT "$LIB_ROOT/nldm_tt_27_1p5.lib"
+@file(sweep_E2.tcl) 17: set LIB_SS "$LIB_ROOT/nldm_ss_125_2p45.lib"
+@file(sweep_E2.tcl) 18: set LIB_FF "$LIB_ROOT/nldm_ff_m25_1p55.lib"
+@file(sweep_E2.tcl) 19: set PAD_TYP "$LIB_ROOT/scl1u_pads_typ.lib"
+@file(sweep_E2.tcl) 20: set PAD_MIN "$LIB_ROOT/scl1u_pads_min.lib"
+@file(sweep_E2.tcl) 21: set PAD_MAX "$LIB_ROOT/scl1u_pads_max.lib"
+@file(sweep_E2.tcl) 22: set_db init_lib_search_path $LIB_ROOT
+  Setting attribute of root '/': 'init_lib_search_path' = ../../lib
+@file(sweep_E2.tcl) 23: set_db init_hdl_search_path $RTL_ROOT
+  Setting attribute of root '/': 'init_hdl_search_path' = ../../rtl
+@file(sweep_E2.tcl) 24: create_library_set -name LS_TT -timing [list $LIB_TT $PAD_TYP]
+Error   : File error. [FILE-100] [create_library_set]
+        : Cannot open file '../../lib/nldm_tt_27_1p5.lib'
+        : Make sure that the file is a readable regular file and has the specified name.
+Error   : An invalid file was specified for a library_set. [LBR-615] [create_library_set]
+        : An invalid value was specified for the '-timing' option when creating the 'LS_TT' library_set.
+        : You either specified no file or a non-existing file. Specify an existing file name with the correct format.
+#@ End verbose source ./sweep_E2.tcl
+1
+Encountered problems processing file: sweep_E2.tcl
+
+Lic Summary:
+[09:17:09.401880] Cdslmd servers: cadence-c2s
+[09:17:09.401888] Feature usage summary:
+[09:17:09.401889] Genus_Synthesis
+

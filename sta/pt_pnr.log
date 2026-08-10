@@ -1,0 +1,1248 @@
+[SCL] 08/06/2026 17:20:16 Checking status for feature PrimeTime
+[SCL] 08/06/2026 17:20:16 PID:189588 Client:smartlab6.calicut.nielit.in Server:27020@14.139.1.126 Checkout succeeded PrimeTime 2022.03
+[SCL] 08/06/2026 17:20:16 PID:189588 Client:smartlab6.calicut.nielit.in Authorization failed Synopsys-Release 2022.03
+[SCL] 08/06/2026 17:20:16 PID:189588 Client:smartlab6.calicut.nielit.in Authorization failed PrimeTime-New-Technology 2022.03
+Error: Library Compiler executable path is not set. (PT-063)
+[SCL] 08/06/2026 17:20:17 PID:189588 Client:smartlab6.calicut.nielit.in Authorization failed PrimeTime-New-Technology8 2022.03
+
+                                 PrimeTime (R)
+
+               Version T-2022.03-SP2 for linux64 - Jun 01, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+[SCL] 08/06/2026 17:20:17 PID:189588 Client:smartlab6.calicut.nielit.in Authorization failed PrimeTime-C-Interface 2022.03
+set search_path [list ../lib]
+../lib
+set target_library [list nldm_tt_27_1p5.lib scl1u_pads_typ.lib]
+nldm_tt_27_1p5.lib scl1u_pads_typ.lib
+set link_library [list * nldm_tt_27_1p5.lib scl1u_pads_typ.lib]
+* nldm_tt_27_1p5.lib scl1u_pads_typ.lib
+# Read the Netlist
+read_verilog $env(NETLIST)
+1
+current_design top
+Information: current_design won't return any data before link (DES-071)
+link
+Beginning read_lib...
+Using exec: /opt/synopsys/primetime/prime/T-2022.03-SP2/linux64/syn/bin/common_shell_exec
+Beginning read_lib...
+Using exec: /opt/synopsys/primetime/prime/T-2022.03-SP2/linux64/syn/bin/common_shell_exec
+Loading verilog file '/home/rithwik/OV7670-camera-asic-scl/pnr/pnr_final.v'
+Loading db file '/home/rithwik/OV7670-camera-asic-scl/lib/nldm_tt_27_1p5.lib'
+Error: Problem in read_lib: child process exited abnormally : Check installation. (DBR-011)
+Error: Cannot read link_path file 'nldm_tt_27_1p5.lib'. (LNK-001)
+Loading db file '/home/rithwik/OV7670-camera-asic-scl/lib/scl1u_pads_typ.lib'
+Error: Problem in read_lib: child process exited abnormally : Check installation. (DBR-011)
+Error: Cannot read link_path file 'scl1u_pads_typ.lib'. (LNK-001)
+Loading db file '/home/rithwik/OV7670-camera-asic-scl/lib/nldm_tt_27_1p5.lib'
+Beginning read_lib...
+Using exec: /opt/synopsys/primetime/prime/T-2022.03-SP2/linux64/syn/bin/common_shell_exec
+Error: Problem in read_lib: child process exited abnormally : Check installation. (DBR-011)
+Error: Cannot read link_path file 'nldm_tt_27_1p5.lib'. (LNK-001)
+Loading db file '/home/rithwik/OV7670-camera-asic-scl/lib/scl1u_pads_typ.lib'
+Beginning read_lib...
+Using exec: /opt/synopsys/primetime/prime/T-2022.03-SP2/linux64/syn/bin/common_shell_exec
+Error: Problem in read_lib: child process exited abnormally : Check installation. (DBR-011)
+Error: Cannot read link_path file 'scl1u_pads_typ.lib'. (LNK-001)
+Linking design top...
+
+
+Information: Main library is not specified. Please specify main library. (LNK-049)
+Warning: Unable to resolve reference to 'PDDR04' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR3101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR801' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND801' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR7101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND501' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR501' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR05' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR4101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DEC24H' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'PDDR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR601' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR04' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR05' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFFL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFFL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AOI401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND501' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR05' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DEC24H' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR3101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR200' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADNR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND300' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'PDDR04' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AOI401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR3101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND501' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADNR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND501' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADOR16' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR7101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR06' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ORND01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR200' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADOR16' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADNR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AOI401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTPR11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND501' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR3101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR06' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFFL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR8101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR3101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADNR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFFL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'XNR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NOR201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR3101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'NND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR03' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'LTCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'OR2101' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND401' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND201' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'AND301' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'ADNR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR01' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'DFCL11' in 'top'. (LNK-005)
+Warning: Unable to resolve reference to 'INVR02' in 'top'. (LNK-005)
+Information: Creating black box for display_interface/g2044/NOR801... (LNK-043)
+Information: Creating black box for display_interface/g2045/AND801... (LNK-043)
+Information: Creating black box for display_interface/g2048/AND801... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_btn_start_db/g856__1200/OR8101... (LNK-043)
+Information: Creating black box for display_interface/g2047/OR7101... (LNK-043)
+Information: Creating black box for display_interface/g1671/OR7101... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/g1371__6783/OR7101... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6385__5526/OR7101... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6382__4319/OR7101... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6390__1705/OR7101... (LNK-043)
+Information: Creating black box for display_interface/inc_add_83_68_g536/DEC24H... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/g2358/NOR601... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/g1054__6260/NOR601... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/inc_add_88_66_g536__1705/DEC24H... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6414__5526/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4599__7410/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4189__6783/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4617__5122/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4587__4733/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4597__1666/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4595__2346/ADOR16... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4593__2883/ADOR16... (LNK-043)
+Information: Creating black box for display_interface/g2943/NND501... (LNK-043)
+Information: Creating black box for display_interface/inc_add_83_68_g557/NND501... (LNK-043)
+Information: Creating black box for display_interface/g1673/NOR501... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/g1051__5477/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/inc_add_88_66_g557__8246/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6388__1617/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6378__5477/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6369__2883/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6376__7410/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6365__9315/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6384__8428/AND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6377__6417/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6389__2802/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6375__1666/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6368__9945/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6379__2398/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6394__6131/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6396__5115/AND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/OV7670_Registers/g6374__2346/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g4192__3680/NND501... (LNK-043)
+Information: Creating black box for OV7670_cam/configure_cam/SCCB_HERE/g7314/NND501... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[6]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[18]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[1]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[13]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/g2041/AND401... (LNK-043)
+Information: Creating black box for display_interface/g2049/AND401... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[7]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/inc_add_83_68_g558/NND401... (LNK-043)
+Information: Creating black box for display_interface/r_SM_state_reg[0]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[2]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[14]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/CG__RC_CG_HIER_INST15/enl_reg/LTPR11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[8]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/r_SM_state_reg[1]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[3]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[15]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[10]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/g2961/OR4101... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[9]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[4]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[16]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/inc_add_83_68_g319/NOR401... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[11]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[5]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[17]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[0]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/o_pix_addr_reg[12]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[2]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[7]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[2]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[5]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[0]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[5]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[0]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[8]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[3]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[8]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[3]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enl_reg/LTPR11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enl_reg/LTPR11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[6]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[1]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[6]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[1]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[9]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[4]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[9]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/hc_reg[4]/DFCL11... (LNK-043)
+Information: Creating black box for display_interface/vga_timing_signals/vc_reg[7]/DFCL11... (LNK-043)
+Information: Creating black box for r2_rstn_top_clk_reg/DFCL11... (LNK-043)
+Information: Creating black box for r1_rstn_pclk_reg/DFCL11... (LNK-043)
+Information: Creating black box for r1_rstn_top_clk_reg/DFCL11... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/o_pix_data_reg[2]/DFCL11... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/SM_state_reg[0]/DFCL11... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/o_pix_addr_reg[6]/DFCL11... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/o_pix_addr_reg[18]/DFCL11... (LNK-043)
+Information: Creating black box for OV7670_cam/cam_pixels/g2304/AOI401... (LNK-043)
+Note - message 'LNK-043' default limit (100) exceeded.  Remainder will be suppressed.
+Information: Removing 29 unneeded designs..... (LNK-034)
+Information: Design 'top' was not successfully linked: 0 unresolved references. (LNK-003)
+0
+# Read constraints
+source -echo -verbose $env(SDC_FILE)
+# ####################################################################
+#  Created by Genus(TM) Synthesis Solution 21.14-s082_1 on Thu Aug 06 11:12:40 IST 2026
+# ####################################################################
+set sdc_version 2.0
+Information: Setting sdc_version outside of an SDC file has no effect (SDC-1)
+2.0
+set_units -capacitance 1000fF
+0
+set_units -time 1000ps
+0
+# Set the current design
+current_design top
+{"top"}
+create_clock -name "i_top_clk" -period 20.0 -waveform {0.0 10.0} [get_ports i_top_clk]
+1
+create_clock -name "i_top_pclk" -period 40.0 -waveform {0.0 20.0} [get_ports i_top_pclk]
+1
+create_clock -name "w_clk25m" -period 40.0 -waveform {0.0 20.0} [get_ports w_clk25m]
+1
+set_clock_transition 0.1 [get_clocks i_top_clk]
+1
+set_clock_transition 0.1 [get_clocks i_top_pclk]
+1
+set_clock_transition 0.1 [get_clocks w_clk25m]
+1
+set_load -pin_load 0.136 [get_ports o_top_cam_done]
+1
+set_load -pin_load 0.136 [get_ports o_top_reset]
+1
+set_load -pin_load 0.136 [get_ports o_top_pwdn]
+1
+set_load -pin_load 0.136 [get_ports o_top_xclk]
+1
+set_load -pin_load 0.136 [get_ports o_top_sda_out]
+1
+set_load -pin_load 0.136 [get_ports o_top_sda_oe]
+1
+set_load -pin_load 0.136 [get_ports o_top_sioc]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_red[3]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_red[2]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_red[1]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_red[0]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_green[3]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_green[2]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_green[1]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_green[0]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_blue[3]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_blue[2]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_blue[1]}]
+1
+set_load -pin_load 0.136 [get_ports {o_top_vga_blue[0]}]
+1
+set_load -pin_load 0.136 [get_ports o_top_vga_vsync]
+1
+set_load -pin_load 0.136 [get_ports o_top_vga_hsync]
+1
+set_load -pin_load 0.136 [get_ports o_bram_clka]
+1
+set_load -pin_load 0.136 [get_ports o_bram_ena]
+1
+set_load -pin_load 0.136 [get_ports o_bram_wea]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[18]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[17]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[16]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[15]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[14]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[13]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[12]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[11]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[10]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[9]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[8]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[7]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[6]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[5]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[4]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[3]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[2]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[1]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addra[0]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[11]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[10]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[9]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[8]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[7]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[6]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[5]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[4]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[3]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[2]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[1]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_dina[0]}]
+1
+set_load -pin_load 0.136 [get_ports o_bram_clkb]
+1
+set_load -pin_load 0.136 [get_ports o_bram_enb]
+1
+set_load -pin_load 0.136 [get_ports o_bram_web]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[18]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[17]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[16]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[15]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[14]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[13]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[12]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[11]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[10]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[9]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[8]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[7]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[6]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[5]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[4]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[3]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[2]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[1]}]
+1
+set_load -pin_load 0.136 [get_ports {o_bram_addrb[0]}]
+1
+set_false_path -from [get_ports i_top_rst]
+1
+set_clock_groups -name "CG_ASYNC_DOMAINS" -asynchronous -group [get_clocks i_top_clk] -group [get_clocks i_top_pclk] -group [get_clocks w_clk25m]
+1
+group_path -weight 1.000000 -name cg_enable_group_i_top_clk -through [list \
+  [get_pins OV7670_cam/cam_btn_start_db/CG__RC_CG_HIER_INST1/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST5/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST6/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST7/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST8/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST9/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST10/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST11/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST12/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST13/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST14/enable]  \
+  [get_pins top_btn_db/CG__RC_CG_HIER_INST18/enable]  \
+  [get_pins OV7670_cam/cam_btn_start_db/CG__RC_CG_HIER_INST1/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST5/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST6/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST7/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST8/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST9/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST10/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST11/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST12/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST13/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST14/enable]  \
+  [get_pins top_btn_db/CG__RC_CG_HIER_INST18/enable]  \
+  [get_pins OV7670_cam/cam_btn_start_db/CG__RC_CG_HIER_INST1/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST5/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST6/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST7/enable]  \
+  [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST8/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST9/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST10/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST11/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST12/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST13/enable]  \
+  [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST14/enable]  \
+  [get_pins top_btn_db/CG__RC_CG_HIER_INST18/enable] ]
+1
+group_path -weight 1.000000 -name cg_enable_group_i_top_pclk -through [list \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST2/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST3/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST4/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST2/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST3/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST4/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST2/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST3/enable]  \
+  [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST4/enable] ]
+1
+group_path -weight 1.000000 -name cg_enable_group_w_clk25m -through [list \
+  [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enable]  \
+  [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enable]  \
+  [get_pins display_interface/CG__RC_CG_HIER_INST15/enable]  \
+  [get_pins display_interface/CG__RC_CG_HIER_INST15/enable]  \
+  [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enable]  \
+  [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enable]  \
+  [get_pins display_interface/CG__RC_CG_HIER_INST15/enable]  \
+  [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enable]  \
+  [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enable] ]
+1
+set_clock_gating_check -setup 0.0 
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_rst]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_cam_start]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[7]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[6]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[5]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[4]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[3]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[2]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[1]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[0]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_pix_vsync]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_pix_href]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_sda_in]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_rst]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_cam_start]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[7]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[6]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[5]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[4]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[3]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[2]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[1]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[0]}]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_pix_vsync]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_pix_href]
+1
+set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_sda_in]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_cam_done]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_reset]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_pwdn]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_xclk]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_sda_out]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_sda_oe]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_sioc]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[3]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[2]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[1]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[0]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[3]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[2]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[1]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[0]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[3]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[2]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[1]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[0]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_vga_vsync]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_vga_hsync]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_cam_done]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_reset]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_pwdn]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_xclk]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_sda_out]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_sda_oe]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_sioc]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[3]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[2]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[1]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[0]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[3]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[2]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[1]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[0]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[3]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[2]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[1]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[0]}]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_vga_vsync]
+1
+set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_vga_hsync]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports o_bram_clka]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports o_bram_ena]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports o_bram_wea]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[18]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[17]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[16]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[15]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[14]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[13]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[12]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[11]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[10]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[9]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[8]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[7]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[6]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[5]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[4]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[3]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[2]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[1]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[0]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[11]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[10]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[9]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[8]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[7]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[6]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[5]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[4]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[3]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[2]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[1]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[0]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports o_bram_clka]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports o_bram_ena]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports o_bram_wea]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[18]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[17]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[16]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[15]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[14]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[13]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[12]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[11]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[10]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[9]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[8]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[7]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[6]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[5]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[4]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[3]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[2]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[1]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[0]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[11]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[10]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[9]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[8]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[7]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[6]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[5]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[4]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[3]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[2]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[1]}]
+1
+set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[0]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports o_bram_clkb]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports o_bram_enb]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports o_bram_web]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[18]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[17]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[16]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[15]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[14]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[13]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[12]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[11]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[10]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[9]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[8]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[7]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[6]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[5]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[4]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[3]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[2]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[1]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[0]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports o_bram_clkb]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports o_bram_enb]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports o_bram_web]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[18]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[17]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[16]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[15]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[14]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[13]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[12]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[11]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[10]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[9]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[8]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[7]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[6]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[5]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[4]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[3]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[2]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[1]}]
+1
+set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[0]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[11]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[10]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[9]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[8]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[7]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[6]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[5]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[4]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[3]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[2]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[1]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[0]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[11]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[10]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[9]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[8]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[7]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[6]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[5]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[4]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[3]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[2]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[1]}]
+1
+set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[0]}]
+1
+set_max_fanout 16.000 [current_design]
+1
+set_max_transition 1.0 [current_design]
+1
+set_input_transition 0.15 [get_ports i_top_clk]
+1
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_rst]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_input_transition 0.15 [get_ports w_clk25m]
+1
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_cam_start]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_input_transition 0.15 [get_ports i_top_pclk]
+1
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[7]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[6]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[5]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[4]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[3]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[2]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[1]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[0]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_pix_vsync]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_pix_href]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_sda_in]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[11]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[10]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[9]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[8]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[7]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[6]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[5]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[4]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[3]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[2]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[1]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[0]}]
+Warning: Nothing implicitly matched 'ss_125_2p45' (SEL-003)
+Error: Nothing matched for collection (SEL-005)
+Error: Cannot find library cell 'INVR04' in library 'ss_125_2p45'. (DES-008)
+0
+set_clock_uncertainty -setup 0.1 [get_clocks i_top_clk]
+1
+set_clock_uncertainty -hold 0.05 [get_clocks i_top_clk]
+1
+set_clock_uncertainty -setup 0.1 [get_clocks i_top_pclk]
+1
+set_clock_uncertainty -hold 0.05 [get_clocks i_top_pclk]
+1
+set_clock_uncertainty -setup 0.1 [get_clocks w_clk25m]
+1
+set_clock_uncertainty -hold 0.05 [get_clocks w_clk25m]
+1
+1
+1
+# Read parasitics if this is a post-route or post-floorplan run with SPEF
+if {[info exists env(SPEF_FILE)] && $env(SPEF_FILE) != ""} {
+    read_parasitics $env(SPEF_FILE)
+}
+Information: Log for 'read_parasitics command' will be generated in 'parasitics_command.log'. (PARA-107)
+1
+# Update timing and check setup/hold
+update_timing
+Information: Building multi voltage information for entire design. (MV-022)
+Warning: Some timing arcs have been disabled for breaking timing loops or because of constant propagation. Use the 'report_disable_timing' command to get the list of these disabled timing arcs. (PTE-003)
+1
+check_timing
+Information: Checking 'no_input_delay'.
+Information: Checking 'no_driving_cell'.
+Warning: There are 27 ports with parasitics but with no driving cell.
+
+Information: Checking 'unconstrained_endpoints'.
+Information: Checking 'unexpandable_clocks'.
+Information: Checking 'latch_fanout'.
+Information: Checking 'no_clock'.
+Information: Checking 'partial_input_delay'.
+Information: Checking 'generic'.
+Information: Checking 'loops'.
+Information: Checking 'generated_clocks'.
+Information: Checking 'pulse_clock_non_pulse_clock_merge'.
+Information: Checking 'pll_configuration'.
+Information: Checking 'voltage_level'.
+0
+# Generate Reports
+report_timing -delay_type max > $env(STAGE)_setup.rpt
+report_timing -delay_type min > $env(STAGE)_hold.rpt
+report_qor > $env(STAGE)_qor.rpt
+report_constraints -all_violators > $env(STAGE)_violators.rpt
+exit
+Suppressed Messages Summary:
+Id          Severity      Occurrences   Suppressed
+-------------------------------------------------------------------------------
+DB-1        Error                   8            8
+LNK-043     Information          1860         1760
+Total 2 types of messages are suppressed
+
+Timing updates: 1 (0 implicit, 1 explicit) (0 incremental, 1 full, 0 logical)
+Noise updates: 0 (0 implicit, 0 explicit) (0 incremental, 0 full)
+Maximum memory usage for this session: 2551.35 MB
+CPU usage for this session: 4 seconds 
+Elapsed time for this session: 4 seconds
+Diagnostics summary: 55 errors, 251 warnings, 107 informationals
+
+Thank you for using pt_shell!
+[SCL] 08/06/2026 17:20:18 PID:189588 Client:smartlab6.calicut.nielit.in checkin-incr Feature:PrimeTime Count:1 
+this API scl_mt_init() needs to be used with the threaded version of SCL library.

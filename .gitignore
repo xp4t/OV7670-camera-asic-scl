@@ -1,0 +1,46 @@
+# Ignore technology files
+*.lib
+*.lef
+*.cdl
+*.lydrc
+*.lvs
+*.lyp
+*.lyt
+*.tech
+*.map
+*.rule
+*.tf
+*.ict
+*.captable
+
+# Ignore heavy directories that might contain tech data or massive binaries
+lib/
+lef/
+cdl/
+klayout_rules/
+klayout_signoff_pack/
+.cadence/
+
+# Ignore heavy intermediates
+*.zip
+*.deb
+*.rpm
+*.tar.gz
+*.vcd
+*.fsdb
+*.dsn
+*.spef
+*.def
+*.enc
+*.enc.dat/
+innovus.log*
+flex*.log*
+*.gds
+!pnr_clean_final.gds
+!pnr_fixed_final.gds
+!final_drc_check/pnr_fixed_final.gds
+!final_drc_check/pnr_clean_final.gds
+
+# Ignore generated reports/databases if not explicitly added
+*.lvsdb
+*.lyrdb

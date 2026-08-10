@@ -1,0 +1,80 @@
+Cadence Genus(TM) Synthesis Solution.
+Copyright 2022 Cadence Design Systems, Inc. All rights reserved worldwide.
+Cadence and the Cadence logo are registered trademarks and Genus is a trademark
+of Cadence Design Systems, Inc. in the United States and other countries.
+
+[09:37:44.022490] Configured Lic search path (21.01-s002): 5280@c2s.cdacb.in:1717@c2s.cdacb.in
+
+Version: 21.14-s082_1, built Thu Jun 23 02:02:08 PDT 2022
+Options: -files synth.tcl 
+Date:    Tue Aug 04 09:37:44 2026
+Host:    smartlab6.calicut.nielit.in (x86_64 w/Linux 4.18.0-553.33.1.el8_10.x86_64) (18cores*36cpus*1physical cpu*Intel(R) Xeon(R) W-2295 CPU @ 3.00GHz 25344KB) (131199140KB)
+PID:     19437
+OS:      Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+Checkout succeeded: Genus_Synthesis/3FFB3787901511A9760E
+	License file: 5280@c2s.cdacb.in
+	License Server: 5280@c2s.cdacb.in
+
+[09:37:46.435336] Periodic Lic check successful
+[09:37:46.435338] Feature usage summary:
+[09:37:46.435339] Genus_Synthesis
+Checking out license: Genus_Synthesis
+
+
+***********************************************************************************************************
+***********************************************************************************************************
+
+
+
+Loading tool scripts...WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+
+Finished loading tool scripts (7 seconds elapsed).
+
+#@ Processing -files option
+@genus 1> source synth.tcl
+#@ Begin verbose source ./synth.tcl
+@file(synth.tcl) 21: set DESIGN_NAME   "top"
+@file(synth.tcl) 22: set RTL_ROOT      "../rtl"
+@file(synth.tcl) 23: set LIB_ROOT      "../lib"
+@file(synth.tcl) 24: set LEF_ROOT      "../lef"
+@file(synth.tcl) 25: set OUT_DIR       "../out"
+@file(synth.tcl) 26: set REPORT_DIR    "../reports"
+@file(synth.tcl) 28: file mkdir $OUT_DIR
+@file(synth.tcl) 29: file mkdir $REPORT_DIR
+@file(synth.tcl) 34: set LIB_TT "$LIB_ROOT/nldm_tt_27_1p5.lib"
+@file(synth.tcl) 35: set LIB_SS "$LIB_ROOT/nldm_ss_125_2p45.lib"
+@file(synth.tcl) 36: set LIB_FF "$LIB_ROOT/nldm_ff_m25_1p55.lib"
+@file(synth.tcl) 39: set PAD_TYP "$LIB_ROOT/scl1u_pads_typ.lib"
+@file(synth.tcl) 40: set PAD_MIN "$LIB_ROOT/scl1u_pads_min.lib"
+@file(synth.tcl) 41: set PAD_MAX "$LIB_ROOT/scl1u_pads_max.lib"
+@file(synth.tcl) 43: set_db init_lib_search_path $LIB_ROOT
+  Setting attribute of root '/': 'init_lib_search_path' = ../lib
+@file(synth.tcl) 44: set_db init_hdl_search_path $RTL_ROOT
+  Setting attribute of root '/': 'init_hdl_search_path' = ../rtl
+@file(synth.tcl) 52: create_library_set -name LS_TT -timing [list $LIB_TT $PAD_TYP]
+@file(synth.tcl) 53: create_library_set -name LS_SS -timing [list $LIB_SS $PAD_MAX]
+@file(synth.tcl) 54: create_library_set -name LS_FF -timing [list $LIB_FF $PAD_MIN]
+@file(synth.tcl) 60: create_timing_condition -name TC_TT -library_sets LS_TT
+@file(synth.tcl) 61: create_timing_condition -name TC_SS -library_sets LS_SS
+@file(synth.tcl) 62: create_timing_condition -name TC_FF -library_sets LS_FF
+@file(synth.tcl) 67: create_delay_corner -name DC_TT -timing_condition TC_TT
+@file(synth.tcl) 68: create_delay_corner -name DC_SS -timing_condition TC_SS
+@file(synth.tcl) 69: create_delay_corner -name DC_FF -timing_condition TC_FF
+@file(synth.tcl) 71: create_constraint_mode -name CM_FUNC -sdc_files { ./constraints.sdc }
+Error   : File error. [FILE-100] [create_constraint_mode]
+        : File './constraints.sdc' not found
+        : Make sure that the file is a readable regular file and has the specified name.
+Error   : Incorrect list type. [TIM-403] [create_constraint_mode]
+        : The list type is invalid
+        : The list format is invalid.
+#@ End verbose source ./synth.tcl
+1
+Encountered problems processing file: synth.tcl
+WARNING: This version of the tool is 1502 days old.
+
+Another Ctrl-C within 1 second will terminate the tool.
+CURRENT RESOURCES: RT {elapsed: 20s, ST: 7s, FG: 7s, CPU: 65.6%}, MEM {curr: 1.0G, peak: 1.0G, phys curr: 0.3G, phys peak: 0.3G}, SYS {load: 0.2, cpu: 36, total: 125.1G, free: 115.5G}
+Abnormal exit.

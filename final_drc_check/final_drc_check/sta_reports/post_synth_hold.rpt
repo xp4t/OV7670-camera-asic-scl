@@ -1,0 +1,39 @@
+****************************************
+Report : timing
+	-path_type full
+	-delay_type min
+	-max_paths 1
+	-sort_by slack
+Design : top
+Version: T-2022.03-SP2
+Date   : Thu Aug  6 17:20:08 2026
+****************************************
+
+
+  Startpoint: i_top_pclk (clock source 'i_top_pclk')
+  Endpoint: o_bram_clka
+               (output port clocked by i_top_pclk)
+  Path Group: i_top_pclk
+  Path Type: min
+
+  Point                                    Incr       Path
+  ---------------------------------------------------------------
+  clock i_top_pclk (rise edge)             0.00       0.00
+  clock source latency                     0.00       0.00
+  i_top_pclk (in)                          0.00       0.00 r
+  o_bram_clka (out)                        0.00       0.00 r
+  data arrival time                                   0.00
+
+  clock i_top_pclk (rise edge)             0.00       0.00
+  clock reconvergence pessimism            0.00       0.00
+  clock uncertainty                        0.05       0.05
+  output external delay                   -0.50      -0.45
+  data required time                                 -0.45
+  ---------------------------------------------------------------
+  data required time                                 -0.45
+  data arrival time                                   0.00
+  ---------------------------------------------------------------
+  slack (MET)                                         0.45
+
+
+1

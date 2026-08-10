@@ -1,0 +1,229 @@
+Cadence Genus(TM) Synthesis Solution.
+Copyright 2022 Cadence Design Systems, Inc. All rights reserved worldwide.
+Cadence and the Cadence logo are registered trademarks and Genus is a trademark
+of Cadence Design Systems, Inc. in the United States and other countries.
+
+[09:47:01.022442] Configured Lic search path (21.01-s002): 5280@c2s.cdacb.in:1717@c2s.cdacb.in
+
+Version: 21.14-s082_1, built Thu Jun 23 02:02:08 PDT 2022
+Options: -files synth.tcl 
+Date:    Tue Aug 04 09:47:01 2026
+Host:    smartlab6.calicut.nielit.in (x86_64 w/Linux 4.18.0-553.33.1.el8_10.x86_64) (18cores*36cpus*1physical cpu*Intel(R) Xeon(R) W-2295 CPU @ 3.00GHz 25344KB) (131199140KB)
+PID:     22417
+OS:      Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+Checkout succeeded: Genus_Synthesis/3FFB3787901511A9760E
+	License file: 5280@c2s.cdacb.in
+	License Server: 5280@c2s.cdacb.in
+
+[09:47:03.463712] Periodic Lic check successful
+[09:47:03.463723] Feature usage summary:
+[09:47:03.463723] Genus_Synthesis
+Checking out license: Genus_Synthesis
+
+
+***********************************************************************************************************
+***********************************************************************************************************
+
+
+
+Loading tool scripts...WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+
+Finished loading tool scripts (6 seconds elapsed).
+
+#@ Processing -files option
+@genus 1> source synth.tcl
+#@ Begin verbose source ./synth.tcl
+@file(synth.tcl) 22: set DESIGN_NAME      "top"
+@file(synth.tcl) 23: set RTL_ROOT         "../rtl"
+@file(synth.tcl) 24: set LIB_ROOT         "../lib"
+@file(synth.tcl) 25: set LEF_ROOT         "../lef"
+@file(synth.tcl) 26: set OUT_DIR          "../out"
+@file(synth.tcl) 27: set REPORT_DIR       "../reports"
+@file(synth.tcl) 28: set CONSTRAINTS_FILE "../constraints.sdc"
+@file(synth.tcl) 30: file mkdir $OUT_DIR
+@file(synth.tcl) 31: file mkdir $REPORT_DIR
+@file(synth.tcl) 36: set LIB_TT "$LIB_ROOT/nldm_tt_27_1p5.lib"
+@file(synth.tcl) 37: set LIB_SS "$LIB_ROOT/nldm_ss_125_2p45.lib"
+@file(synth.tcl) 38: set LIB_FF "$LIB_ROOT/nldm_ff_m25_1p55.lib"
+@file(synth.tcl) 41: set PAD_TYP "$LIB_ROOT/scl1u_pads_typ.lib"
+@file(synth.tcl) 42: set PAD_MIN "$LIB_ROOT/scl1u_pads_min.lib"
+@file(synth.tcl) 43: set PAD_MAX "$LIB_ROOT/scl1u_pads_max.lib"
+@file(synth.tcl) 45: set_db init_lib_search_path $LIB_ROOT
+  Setting attribute of root '/': 'init_lib_search_path' = ../lib
+@file(synth.tcl) 46: set_db init_hdl_search_path $RTL_ROOT
+  Setting attribute of root '/': 'init_hdl_search_path' = ../rtl
+@file(synth.tcl) 54: create_library_set -name LS_TT -timing [list $LIB_TT $PAD_TYP]
+@file(synth.tcl) 55: create_library_set -name LS_SS -timing [list $LIB_SS $PAD_MAX]
+@file(synth.tcl) 56: create_library_set -name LS_FF -timing [list $LIB_FF $PAD_MIN]
+@file(synth.tcl) 62: create_timing_condition -name TC_TT -library_sets LS_TT
+@file(synth.tcl) 63: create_timing_condition -name TC_SS -library_sets LS_SS
+@file(synth.tcl) 64: create_timing_condition -name TC_FF -library_sets LS_FF
+@file(synth.tcl) 69: create_delay_corner -name DC_TT -timing_condition TC_TT
+@file(synth.tcl) 70: create_delay_corner -name DC_SS -timing_condition TC_SS
+@file(synth.tcl) 71: create_delay_corner -name DC_FF -timing_condition TC_FF
+@file(synth.tcl) 73: create_constraint_mode -name CM_FUNC -sdc_files [list $CONSTRAINTS_FILE]
+@file(synth.tcl) 75: create_analysis_view -name AV_SETUP_SS -constraint_mode CM_FUNC -delay_corner DC_SS
+@file(synth.tcl) 76: create_analysis_view -name AV_HOLD_FF  -constraint_mode CM_FUNC -delay_corner DC_FF
+@file(synth.tcl) 77: create_analysis_view -name AV_FUNC_TT  -constraint_mode CM_FUNC -delay_corner DC_TT
+@file(synth.tcl) 79: set_analysis_view -setup { AV_SETUP_SS } -hold { AV_HOLD_FF }
+
+Threads Configured:6
+
+  Message Summary for Library both libraries:
+  *******************************************
+  An unsupported construct was detected in this library. [LBR-40]: 9
+  *******************************************
+ 
+Warning : Libraries have inconsistent nominal operating conditions. In the Liberty library, there are attributes called nom_voltage, nom_process and nom_temperature. Genus reports the message, if the respective values of the 2 given .libs differ. [LBR-38]
+        : The libraries are 'ss_125_2p45' and 'scl1u_pads_max'.
+        : This is a common source of delay calculation confusion and should be avoided.
+Info    : Created nominal operating condition. [LBR-412]
+        : Operating condition '_nominal_' was created for the PVT values (1.000000, 5.000000, 125.000000) in library 'nldm_ss_125_2p45.lib'.
+        : The nominal operating condition is represented, either by the nominal PVT values specified in the library source (via nom_process,nom_voltage and nom_temperature respectively), or by the default PVT values (1.0,1.0,1.0).
+Info    : Created nominal operating condition. [LBR-412]
+        : Operating condition '_nominal_' was created for the PVT values (1.000000, 4.500000, 125.000000) in library 'scl1u_pads_max.lib'.
+Info    : Set default library domain. [LBR-109]
+        : The default library domain is 'library_domain:TC_SS'.
+@file(synth.tcl) 84: read_physical -lefs [list \
+    $LEF_ROOT/tech_c1d.lef \
+    $LEF_ROOT/core_c1d.lef \
+    $LEF_ROOT/corner_c1d.lef \
+    $LEF_ROOT/io_c1d.lef \
+]
+
+  According to lef_library, there are total 2 routing layers [ V(1) / H(1) ]
+
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell DELAY1 cannot be found in library.
+        : Ensure that the proper library files are available and have been imported.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell NND801 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell OR6101 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell VDDCON cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell VSSCON cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER1 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER2 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER3 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER4 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER5 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell PadLessCorner_New cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD120 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD121 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD12D cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD12U cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD140 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD141 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD14D cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD14U cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD221 cannot be found in library.
+Warning : Maximum message print count reached. [MESG-11]
+        : Maximum print count of '20' reached for message 'PHYS-279'.
+Warning : Pin names are not consistent in lib and LEF files. [PHYS-113]
+        : Pin 'PVDD01' of library cell 'PVDD01' is in logical library but not in physical library.
+Warning : Pin names are not consistent in lib and LEF files. [PHYS-113]
+        : Pin 'PVSS01' of library cell 'PVSS01' is in logical library but not in physical library.
+Warning : Found additional logical pin for cell in LEF library. [PHYS-133]
+        : Cell 'PVSS01' in LEF library '/home/rithwik/OV7670-camera-asic-scl/syn/../lef/io_c1d.lef' has an additional logical pin 'VSS'.
+        : When the tool finds a logical pin for a cell in the LEF library that is not present in the logical library, the tool adds this pin to the libcell definition in the session. To prevent this pin addition, set the 'lef_add_logical_pins' root attribute to 'false'.
+@file(synth.tcl) 94: read_hdl [list \
+    $RTL_ROOT/debouncer.v      \
+    $RTL_ROOT/sccb_master.v    \
+    $RTL_ROOT/cam_rom.v        \
+    $RTL_ROOT/cam_init.v       \
+    $RTL_ROOT/cam_config.v     \
+    $RTL_ROOT/cam_capture.v    \
+    $RTL_ROOT/mem_bram.v       \
+    $RTL_ROOT/cam_top.v        \
+    $RTL_ROOT/vga_driver.v     \
+    $RTL_ROOT/vga_top.v        \
+    $RTL_ROOT/top.v            \
+]
+@file(synth.tcl) 108: elaborate $DESIGN_NAME
+Info    : Elaborating Design. [ELAB-1]
+        : Elaborating top-level block 'top' from file '../rtl/../rtl/top.v'.
+Warning : Removing unused register. [CDFG-508]
+        : Removing unused latch register 'byte_index' in module 'cam_config_CLK_F100000000' in file '../rtl/../rtl/cam_config.v' on line 40.
+        : Genus removes the flip-flop or latch inferred for an unused signal or variable. To preserve the flip-flop or latch, set the hdl_preserve_unused_registers attribute to true or use a pragma in the RTL.
+Warning : Unconnected instance input port detected. [ELABUTL-124]
+        : Unconnected input port 'i_bram_doutb' of instance 'pixel_memory' of module 'mem_bram_WIDTH12_DEPTH307200' in file '../rtl/../rtl/top.v' on line 104, column 6, hid = 0.
+        : Run check_design to check 'Undriven Port(s)/Pin(s)' section for all unconnected instance input ports. It is better to double confirm with designer these unconnected instance input port are expected. During syn_gen the unconnected instance input ports are controlled by attribute 'hdl_unconnected_value', the default value is 0.
+Info    : Done Elaborating Design. [ELAB-3]
+        : Done elaborating 'top'.
+Checking for analog nets...
+Check completed for analog nets.
+Checking for source RTL...
+Check completed for source RTL.
+Running Unified Mux Engine Tricks...
+Completed Unified Mux Engine Tricks
+
+Stage: post_elab
+--------------------------------------------------------
+| Trick             | Accepts | Rejects | Runtime (ms) | 
+--------------------------------------------------------
+| ume_constant_bmux |       0 |       0 |         0.00 | 
+--------------------------------------------------------
+Starting clip mux common data inputs [v1.0] (stage: post_elab, startdef: top, recur: true)
+Completed clip mux common data inputs (accepts: 0, rejects: 0, runtime: 0.001s)
+Starting clip the non-user hierarchies [v2.0] (stage: post_elab, startdef: top, recur: true)
+Completed clip the non-user hierarchies (accepts: 0, rejects: 0, runtime: 0.000s)
+
+Stage: post_elab
+---------------------------------------------------------
+| Transform          | Accepts | Rejects | Runtime (ms) | 
+---------------------------------------------------------
+| hlo_clip_mux_input |       0 |       0 |         1.00 | 
+| hlo_clip           |       0 |       0 |         0.00 | 
+---------------------------------------------------------
+UM:   flow.cputime  flow.realtime  timing.setup.tns  timing.setup.wns  snapshot
+UM:*                                                                   elaborate
+@file(synth.tcl) 109: current_design $DESIGN_NAME
+@file(synth.tcl) 111: check_design -unresolved
+
+
+ 	 Check Design Report (c)
+	 ------------------- 
+
+  Unresolved References & Empty Modules
+  ------------------------------------- 
+No unresolved references in design 'top'
+
+No empty modules in design 'top'
+
+  Done Checking the design.
+@file(synth.tcl) 112: uniquify $DESIGN_NAME
+@file(synth.tcl) 125: read_sdc -view AV_SETUP_SS $CONSTRAINTS_FILE
+#@ End verbose source ./synth.tcl
+Failed on assert({[llength $mode]})
+Encountered problems processing file: synth.tcl
+WARNING: This version of the tool is 1502 days old.
+@genus:design:top 2> clear
+@genus:design:top 3> grep -n "^module top\|i_top_clk\|i_top_pclk\|i_top_rst" ../rtl/top.v | head -30
+@genus:design:top 4> exit
+
+Lic Summary:
+[13:55:29.194801] Cdslmd servers: cadence-c2s
+[13:55:29.194809] Feature usage summary:
+[13:55:29.194809] Genus_Synthesis
+
+Normal exit.

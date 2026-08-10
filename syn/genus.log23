@@ -1,0 +1,255 @@
+Cadence Genus(TM) Synthesis Solution.
+Copyright 2022 Cadence Design Systems, Inc. All rights reserved worldwide.
+Cadence and the Cadence logo are registered trademarks and Genus is a trademark
+of Cadence Design Systems, Inc. in the United States and other countries.
+
+[09:23:36.022458] Configured Lic search path (21.01-s002): 5280@c2s.cdacb.in:1717@c2s.cdacb.in
+
+Version: 21.14-s082_1, built Thu Jun 23 02:02:08 PDT 2022
+Options: -batch -files sweep_E4.tcl 
+Date:    Thu Aug 06 09:23:36 2026
+Host:    smartlab6.calicut.nielit.in (x86_64 w/Linux 4.18.0-553.33.1.el8_10.x86_64) (18cores*36cpus*1physical cpu*Intel(R) Xeon(R) W-2295 CPU @ 3.00GHz 25344KB) (131199124KB)
+PID:     18830
+OS:      Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+Checkout succeeded: Genus_Synthesis/3FFB3787901511A9760E
+	License file: 5280@c2s.cdacb.in
+	License Server: 5280@c2s.cdacb.in
+
+[09:23:38.073258] Periodic Lic check successful
+[09:23:38.073264] Feature usage summary:
+[09:23:38.073264] Genus_Synthesis
+Checking out license: Genus_Synthesis
+
+
+***********************************************************************************************************
+***********************************************************************************************************
+
+
+
+Loading tool scripts...WARNING:Hostname to IPv4 and IPv6 address lookup failed for the host cadence-c2s
+
+Finished loading tool scripts (6 seconds elapsed).
+
+#@ Processing -files option
+@genus 1> source sweep_E4.tcl
+#@ Begin verbose source ./sweep_E4.tcl
+@file(sweep_E4.tcl) 7: set EXPERIMENT    "E4_higheffort_clockgate_50MHz"
+@file(sweep_E4.tcl) 8: set DESIGN_NAME   "top"
+@file(sweep_E4.tcl) 9: set RTL_ROOT      "../rtl"
+@file(sweep_E4.tcl) 10: set LIB_ROOT      "../lib"
+@file(sweep_E4.tcl) 11: set LEF_ROOT      "../lef"
+@file(sweep_E4.tcl) 12: set OUT_DIR       "sweep/E4"
+@file(sweep_E4.tcl) 13: set REPORT_DIR    "sweep/E4"
+@file(sweep_E4.tcl) 14: set CONSTRAINTS_FILE "../constraints.sdc"
+@file(sweep_E4.tcl) 15: file mkdir $OUT_DIR
+@file(sweep_E4.tcl) 17: set LIB_TT "$LIB_ROOT/nldm_tt_27_1p5.lib"
+@file(sweep_E4.tcl) 18: set LIB_SS "$LIB_ROOT/nldm_ss_125_2p45.lib"
+@file(sweep_E4.tcl) 19: set LIB_FF "$LIB_ROOT/nldm_ff_m25_1p55.lib"
+@file(sweep_E4.tcl) 20: set PAD_TYP "$LIB_ROOT/scl1u_pads_typ.lib"
+@file(sweep_E4.tcl) 21: set PAD_MIN "$LIB_ROOT/scl1u_pads_min.lib"
+@file(sweep_E4.tcl) 22: set PAD_MAX "$LIB_ROOT/scl1u_pads_max.lib"
+@file(sweep_E4.tcl) 23: set_db init_lib_search_path $LIB_ROOT
+  Setting attribute of root '/': 'init_lib_search_path' = ../lib
+@file(sweep_E4.tcl) 24: set_db init_hdl_search_path $RTL_ROOT
+  Setting attribute of root '/': 'init_hdl_search_path' = ../rtl
+@file(sweep_E4.tcl) 25: create_library_set -name LS_TT -timing [list $LIB_TT $PAD_TYP]
+@file(sweep_E4.tcl) 26: create_library_set -name LS_SS -timing [list $LIB_SS $PAD_MAX]
+@file(sweep_E4.tcl) 27: create_library_set -name LS_FF -timing [list $LIB_FF $PAD_MIN]
+@file(sweep_E4.tcl) 28: create_timing_condition -name TC_TT -library_sets LS_TT
+@file(sweep_E4.tcl) 29: create_timing_condition -name TC_SS -library_sets LS_SS
+@file(sweep_E4.tcl) 30: create_timing_condition -name TC_FF -library_sets LS_FF
+@file(sweep_E4.tcl) 31: create_delay_corner -name DC_TT -timing_condition TC_TT
+@file(sweep_E4.tcl) 32: create_delay_corner -name DC_SS -timing_condition TC_SS
+@file(sweep_E4.tcl) 33: create_delay_corner -name DC_FF -timing_condition TC_FF
+@file(sweep_E4.tcl) 34: create_constraint_mode -name CM_FUNC -sdc_files [list $CONSTRAINTS_FILE]
+@file(sweep_E4.tcl) 35: create_analysis_view -name AV_SETUP_SS -constraint_mode CM_FUNC -delay_corner DC_SS
+@file(sweep_E4.tcl) 36: create_analysis_view -name AV_HOLD_FF  -constraint_mode CM_FUNC -delay_corner DC_FF
+@file(sweep_E4.tcl) 37: set_analysis_view -setup { AV_SETUP_SS } -hold { AV_HOLD_FF }
+
+Threads Configured:6
+
+  Message Summary for Library both libraries:
+  *******************************************
+  An unsupported construct was detected in this library. [LBR-40]: 9
+  *******************************************
+ 
+Warning : Libraries have inconsistent nominal operating conditions. In the Liberty library, there are attributes called nom_voltage, nom_process and nom_temperature. Genus reports the message, if the respective values of the 2 given .libs differ. [LBR-38]
+        : The libraries are 'ss_125_2p45' and 'scl1u_pads_max'.
+        : This is a common source of delay calculation confusion and should be avoided.
+Info    : Created nominal operating condition. [LBR-412]
+        : Operating condition '_nominal_' was created for the PVT values (1.000000, 5.000000, 125.000000) in library 'nldm_ss_125_2p45.lib'.
+        : The nominal operating condition is represented, either by the nominal PVT values specified in the library source (via nom_process,nom_voltage and nom_temperature respectively), or by the default PVT values (1.0,1.0,1.0).
+Info    : Created nominal operating condition. [LBR-412]
+        : Operating condition '_nominal_' was created for the PVT values (1.000000, 4.500000, 125.000000) in library 'scl1u_pads_max.lib'.
+Info    : Set default library domain. [LBR-109]
+        : The default library domain is 'library_domain:TC_SS'.
+@file(sweep_E4.tcl) 38: read_physical -lefs [list \
+    $LEF_ROOT/tech_c1d.lef \
+    $LEF_ROOT/core_c1d.lef \
+    $LEF_ROOT/corner_c1d.lef \
+    $LEF_ROOT/io_c1d.lef ]
+
+  According to lef_library, there are total 2 routing layers [ V(1) / H(1) ]
+
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell DELAY1 cannot be found in library.
+        : Ensure that the proper library files are available and have been imported.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell NND801 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell OR6101 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell VDDCON cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell VSSCON cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER1 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER2 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER3 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER4 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell FILLER5 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell PadLessCorner_New cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD120 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD121 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD12D cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD12U cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD140 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD141 cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD14D cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD14U cannot be found in library.
+Warning : Physical cell not defined in library. [PHYS-279]
+        : The physical (LEF) cell BPD221 cannot be found in library.
+Warning : Maximum message print count reached. [MESG-11]
+        : Maximum print count of '20' reached for message 'PHYS-279'.
+Warning : Pin names are not consistent in lib and LEF files. [PHYS-113]
+        : Pin 'PVDD01' of library cell 'PVDD01' is in logical library but not in physical library.
+Warning : Pin names are not consistent in lib and LEF files. [PHYS-113]
+        : Pin 'PVSS01' of library cell 'PVSS01' is in logical library but not in physical library.
+Warning : Found additional logical pin for cell in LEF library. [PHYS-133]
+        : Cell 'PVSS01' in LEF library '/home/rithwik/OV7670-camera-asic-scl/syn/../lef/io_c1d.lef' has an additional logical pin 'VSS'.
+        : When the tool finds a logical pin for a cell in the LEF library that is not present in the logical library, the tool adds this pin to the libcell definition in the session. To prevent this pin addition, set the 'lef_add_logical_pins' root attribute to 'false'.
+@file(sweep_E4.tcl) 43: read_hdl [list \
+    $RTL_ROOT/debouncer.v $RTL_ROOT/sccb_master.v $RTL_ROOT/cam_rom.v \
+    $RTL_ROOT/cam_init.v  $RTL_ROOT/cam_config.v  $RTL_ROOT/cam_capture.v \
+    $RTL_ROOT/mem_bram.v  $RTL_ROOT/cam_top.v     $RTL_ROOT/vga_driver.v \
+    $RTL_ROOT/vga_top.v   $RTL_ROOT/top.v ]
+@file(sweep_E4.tcl) 48: elaborate $DESIGN_NAME
+Info    : Elaborating Design. [ELAB-1]
+        : Elaborating top-level block 'top' from file '../rtl/../rtl/top.v'.
+Warning : Removing unused register. [CDFG-508]
+        : Removing unused latch register 'byte_index' in module 'cam_config_CLK_F100000000' in file '../rtl/../rtl/cam_config.v' on line 40.
+        : Genus removes the flip-flop or latch inferred for an unused signal or variable. To preserve the flip-flop or latch, set the hdl_preserve_unused_registers attribute to true or use a pragma in the RTL.
+Info    : Done Elaborating Design. [ELAB-3]
+        : Done elaborating 'top'.
+Checking for analog nets...
+Check completed for analog nets.
+Checking for source RTL...
+Check completed for source RTL.
+Running Unified Mux Engine Tricks...
+Completed Unified Mux Engine Tricks
+
+Stage: post_elab
+--------------------------------------------------------
+| Trick             | Accepts | Rejects | Runtime (ms) | 
+--------------------------------------------------------
+| ume_constant_bmux |       0 |       0 |         0.00 | 
+--------------------------------------------------------
+Starting clip mux common data inputs [v1.0] (stage: post_elab, startdef: top, recur: true)
+Completed clip mux common data inputs (accepts: 0, rejects: 0, runtime: 0.000s)
+Starting clip the non-user hierarchies [v2.0] (stage: post_elab, startdef: top, recur: true)
+Completed clip the non-user hierarchies (accepts: 0, rejects: 0, runtime: 0.000s)
+
+Stage: post_elab
+---------------------------------------------------------
+| Transform          | Accepts | Rejects | Runtime (ms) | 
+---------------------------------------------------------
+| hlo_clip_mux_input |       0 |       0 |         0.00 | 
+| hlo_clip           |       0 |       0 |         0.00 | 
+---------------------------------------------------------
+UM:   flow.cputime  flow.realtime  timing.setup.tns  timing.setup.wns  snapshot
+UM:*                                                                   elaborate
+@file(sweep_E4.tcl) 49: current_design $DESIGN_NAME
+@file(sweep_E4.tcl) 50: check_design -unresolved
+
+
+ 	 Check Design Report (c)
+	 ------------------- 
+
+  Unresolved References & Empty Modules
+  ------------------------------------- 
+No unresolved references in design 'top'
+
+No empty modules in design 'top'
+
+  Done Checking the design.
+@file(sweep_E4.tcl) 51: uniquify $DESIGN_NAME
+@file(sweep_E4.tcl) 52: read_sdc $CONSTRAINTS_FILE
+Statistics for commands executed by read_sdc:
+ "all_clocks"               - successful      3 , failed      0 (runtime  0.00)
+ "all_inputs"               - successful      2 , failed      0 (runtime  0.00)
+ "all_outputs"              - successful      3 , failed      0 (runtime  0.00)
+ "create_clock"             - successful      3 , failed      0 (runtime  0.01)
+ "current_design"           - successful      2 , failed      0 (runtime  0.00)
+ "get_clocks"               - successful      3 , failed      0 (runtime  0.00)
+ "get_lib_pins"             - successful      1 , failed      0 (runtime  0.01)
+ "get_ports"                - successful      9 , failed      0 (runtime  0.00)
+ "load_of"                  - successful      1 , failed      0 (runtime  0.00)
+ "remove_from_collection"   - successful      1 , failed      0 (runtime  0.00)
+ "set_clock_groups"         - successful      1 , failed      0 (runtime  0.00)
+ "set_clock_transition"     - successful      1 , failed      0 (runtime  0.00)
+ "set_clock_uncertainty"    - successful      2 , failed      0 (runtime  0.00)
+ "set_driving_cell"         - successful      1 , failed      0 (runtime  0.00)
+ "set_false_path"           - successful      1 , failed      0 (runtime  0.00)
+ "set_input_delay"          - successful      4 , failed      0 (runtime  0.00)
+ "set_input_transition"     - successful      1 , failed      0 (runtime  0.00)
+ "set_load"                 - successful      1 , failed      0 (runtime  0.00)
+ "set_max_fanout"           - successful      1 , failed      0 (runtime  0.00)
+ "set_max_transition"       - successful      1 , failed      0 (runtime  0.00)
+ "set_output_delay"         - successful      6 , failed      0 (runtime  0.00)
+read_sdc completed in 00:00:00 (hh:mm:ss)
+@file(sweep_E4.tcl) 54: set_db syn_generic_effort        high
+  Setting attribute of root '/': 'syn_generic_effort' = high
+@file(sweep_E4.tcl) 55: set_db syn_map_effort            high
+  Setting attribute of root '/': 'syn_map_effort' = high
+@file(sweep_E4.tcl) 56: set_db syn_opt_effort            high
+  Setting attribute of root '/': 'syn_opt_effort' = high
+@file(sweep_E4.tcl) 57: set_db information_level         7
+  Setting attribute of root '/': 'information_level' = 7
+@file(sweep_E4.tcl) 58: set_db auto_ungroup              none
+  Setting attribute of root '/': 'auto_ungroup' = none
+@file(sweep_E4.tcl) 59: set_db lp_insert_clock_gating    true
+Warning : The 'lp_insert_clock_gating' attribute should be set before elaboration. [POPT-104]
+        : The design 'design:top' is already read. The attribute will not be set.
+        : Setting the 'lp_insert_clock_gating' attribute before elaboration will result in an optimal clock-gated design.
+  Setting attribute of root '/': 'lp_insert_clock_gating' = true
+@file(sweep_E4.tcl) 60: set_db lp_clock_gating_prefix    "CG_"
+  Setting attribute of root '/': 'lp_clock_gating_prefix' = CG_
+@file(sweep_E4.tcl) 61: set_db lp_clock_gating_min_flops 4     ;# gate groups of >=4 FFs
+Error   : <Start> word is not recognized. [TUI-182] [set_db]
+        : 'lp_clock_gating_min_flops' is not a recognized object/attribute. Type 'help root:' to get a list of all supported objects and attributes.
+        : Check if the given <Start> word is a valid object_type, object or attribute.
+#@ End verbose source ./sweep_E4.tcl
+1
+Encountered problems processing file: sweep_E4.tcl
+
+Lic Summary:
+[09:23:45.143090] Cdslmd servers: cadence-c2s
+[09:23:45.143098] Feature usage summary:
+[09:23:45.143098] Genus_Synthesis
+

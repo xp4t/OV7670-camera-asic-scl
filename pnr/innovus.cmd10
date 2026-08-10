@@ -1,0 +1,43 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Thu Aug  6 15:43:44 2026                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+#@(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+#@(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+#@(#)CDS: CPE v21.15-s076
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+suppressMessage ENCEXT-2799
+getVersion
+setMultiCpuUsage -localCpu 4
+set init_verilog ../syn/sweep/E4/top_netlist.v
+set init_design_netlisttype Verilog
+set init_design_settop 1
+set init_top_cell top
+set init_lef_file {../lef/tech_c1d.lef ../lef/core_c1d.lef ../lef/corner_c1d.lef ../lef/io_c1d.lef}
+set init_mmmc_file ../floorplanning/mmmc.tcl
+set init_pwr_net VDD
+set init_gnd_net VSS
+init_design
+setFPlanRowSpacingAndType 30.0 1
+floorPlan -r 1.0 0.35 20.0 20.0 20.0 20.0
+clearGlobalNets
+globalNetConnect VDD -type pgpin -pin VDD -inst * -module {}
+globalNetConnect VSS -type pgpin -pin VSS -inst * -module {}
+globalNetConnect VDD -type tiehi -inst * -module {}
+globalNetConnect VSS -type tielo -inst * -module {}
+addRing -skip_via_on_wire_shape Noshape -skip_via_on_pin Standardcell -center 1 -stacked_via_top_layer metal2 -type core_rings -jog_distance 1.6 -threshold 1.6 -nets {VDD VSS} -follow core -stacked_via_bottom_layer metal1 -layer {bottom metal1 top metal1 right metal2 left metal2} -width 3.0 -spacing 2.0 -offset 1.0
+sroute -connect { corePin } -layerChangeRange { metal1 metal2 } -blockPinTarget { nearestTarget } -corePinTarget { ring } -allowJogging 1 -crossoverViaLayerRange { metal1 metal2 } -nets { VDD VSS } -allowLayerChange 1 -blockPin useLef -targetViaLayerRange { metal1 metal2 }
+setMultiCpuUsage -localCpu 1
+editPin -pin {i_top_clk i_top_rst w_clk25m i_top_cam_start o_top_cam_done i_top_pclk {i_top_pix_byte[7]} {i_top_pix_byte[6]} {i_top_pix_byte[5]} {i_top_pix_byte[4]} {i_top_pix_byte[3]} {i_top_pix_byte[2]} {i_top_pix_byte[1]} {i_top_pix_byte[0]} i_top_pix_vsync i_top_pix_href o_top_reset o_top_pwdn o_top_xclk o_top_sda_out o_top_sda_oe i_top_sda_in o_top_sioc {o_top_vga_red[3]} {o_top_vga_red[2]} {o_top_vga_red[1]}} -edge 1 -layer metal2 -spreadType CENTER -snap TRACK
+editPin -pin {{o_top_vga_red[0]} {o_top_vga_green[3]} {o_top_vga_green[2]} {o_top_vga_green[1]} {o_top_vga_green[0]} {o_top_vga_blue[3]} {o_top_vga_blue[2]} {o_top_vga_blue[1]} {o_top_vga_blue[0]} o_top_vga_vsync o_top_vga_hsync o_bram_clka o_bram_ena o_bram_wea {o_bram_addra[18]} {o_bram_addra[17]} {o_bram_addra[16]} {o_bram_addra[15]} {o_bram_addra[14]} {o_bram_addra[13]} {o_bram_addra[12]} {o_bram_addra[11]} {o_bram_addra[10]} {o_bram_addra[9]} {o_bram_addra[8]} {o_bram_addra[7]}} -edge 2 -layer metal2 -spreadType CENTER -snap TRACK
+editPin -pin {{o_bram_addra[6]} {o_bram_addra[5]} {o_bram_addra[4]} {o_bram_addra[3]} {o_bram_addra[2]} {o_bram_addra[1]} {o_bram_addra[0]} {o_bram_dina[11]} {o_bram_dina[10]} {o_bram_dina[9]} {o_bram_dina[8]} {o_bram_dina[7]} {o_bram_dina[6]} {o_bram_dina[5]} {o_bram_dina[4]} {o_bram_dina[3]} {o_bram_dina[2]} {o_bram_dina[1]} {o_bram_dina[0]} o_bram_clkb o_bram_enb o_bram_web {o_bram_addrb[18]} {o_bram_addrb[17]} {o_bram_addrb[16]} {o_bram_addrb[15]}} -edge 3 -layer metal2 -spreadType CENTER -snap TRACK
+editPin -pin {{o_bram_addrb[14]} {o_bram_addrb[13]} {o_bram_addrb[12]} {o_bram_addrb[11]} {o_bram_addrb[10]} {o_bram_addrb[9]} {o_bram_addrb[8]} {o_bram_addrb[7]} {o_bram_addrb[6]} {o_bram_addrb[5]} {o_bram_addrb[4]} {o_bram_addrb[3]} {o_bram_addrb[2]} {o_bram_addrb[1]} {o_bram_addrb[0]} {i_bram_doutb[11]} {i_bram_doutb[10]} {i_bram_doutb[9]} {i_bram_doutb[8]} {i_bram_doutb[7]} {i_bram_doutb[6]} {i_bram_doutb[5]} {i_bram_doutb[4]} {i_bram_doutb[3]} {i_bram_doutb[2]} {i_bram_doutb[1]} {i_bram_doutb[0]}} -edge 4 -layer metal2 -spreadType CENTER -snap TRACK
+win

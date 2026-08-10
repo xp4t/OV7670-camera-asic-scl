@@ -1,0 +1,8 @@
+# Cadence Genus(TM) Synthesis Solution, Version 21.14-s082_1, built Jun 23 2022 14:32:08
+
+# Date: Tue Aug 04 15:20:35 2026
+# Host: smartlab6.calicut.nielit.in (x86_64 w/Linux 4.18.0-553.33.1.el8_10.x86_64) (18cores*36cpus*1physical cpu*Intel(R) Xeon(R) W-2295 CPU @ 3.00GHz 25344KB)
+# OS:   Red Hat Enterprise Linux release 8.10 (Ootpa)
+
+source synth.tcl
+clear

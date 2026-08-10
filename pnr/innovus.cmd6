@@ -1,0 +1,37 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Thu Aug  6 15:35:35 2026                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+#@(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+#@(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+#@(#)CDS: CPE v21.15-s076
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+suppressMessage ENCEXT-2799
+getVersion
+setMultiCpuUsage -localCpu 4
+set init_verilog ../syn/sweep/E4/top_netlist.v
+set init_design_netlisttype Verilog
+set init_design_settop 1
+set init_top_cell top
+set init_lef_file {../lef/tech_c1d.lef ../lef/core_c1d.lef ../lef/corner_c1d.lef ../lef/io_c1d.lef}
+set init_mmmc_file ../floorplanning/mmmc.tcl
+set init_pwr_net VDD
+set init_gnd_net VSS
+init_design
+floorPlan -r 1.0 0.20 20.0 20.0 20.0 20.0
+clearGlobalNets
+globalNetConnect VDD -type pgpin -pin VDD -inst * -module {}
+globalNetConnect VSS -type pgpin -pin VSS -inst * -module {}
+globalNetConnect VDD -type tiehi -inst * -module {}
+globalNetConnect VSS -type tielo -inst * -module {}
+addRing -skip_via_on_wire_shape Noshape -skip_via_on_pin Standardcell -center 1 -stacked_via_top_layer metal2 -type core_rings -jog_distance 1.6 -threshold 1.6 -nets {VDD VSS} -follow core -stacked_via_bottom_layer metal1 -layer {bottom metal1 top metal1 right metal2 left metal2} -width 3.0 -spacing 2.0 -offset 1.0
+sroute -connect { corePin } -layerChangeRange { metal1 metal2 } -blockPinTarget { nearestTarget } -corePinTarget { firstNetsOnCoreRing } -allowJogging 1 -crossoverViaLayerRange { metal1 metal2 } -nets { VDD VSS } -allowLayerChange 1 -blockPin useLef -targetViaLayerRange { metal1 metal2 }
+win

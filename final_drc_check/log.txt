@@ -1,0 +1,21 @@
+========================================
+    Running SCL 1.2um DRC Checks...     
+========================================
+Writing report database: /home/xpat/final_drc_check/drc_report.lyrdb ..
+Total elapsed: 28.330s  Memory: 637.00M
+DRC Complete. Report saved to drc_report.lyrdb
+========================================
+    Running SCL 1.2um LVS Checks...     
+========================================
+2026-08-10 12:29:55 +0530: Starting running SCL C1D Klayout LVS runset on pnr_fixed_final.gds with top cell top
+2026-08-10 12:29:55 +0530: deep mode is enabled.
+2026-08-10 12:29:55 +0530: Netlist file: pnr_final_yosys_wrapped.spi
+2026-08-10 12:29:55 +0530: Extracted netlist file: layout_extracted.cir
+2026-08-10 12:29:55 +0530: Final report: lvs_report.lvsdb
+2026-08-10 12:31:07 +0530: LVS Total Run time 71.776186 seconds
+2026-08-10 12:31:07 +0530: ==========================================
+2026-08-10 12:31:07 +0530: INFO : Congratulations! Netlists match.
+2026-08-10 12:31:07 +0530: INFO : (17,018 devices and nets verified successfully)
+2026-08-10 12:31:07 +0530: ==========================================
+LVS Complete. Report saved to lvs_report.lvsdb
+Done! You can open the .lyrdb and .lvsdb files in the KLayout GUI to inspect.
