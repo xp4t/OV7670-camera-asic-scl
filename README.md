@@ -8,6 +8,8 @@ The flow covers everything from logic synthesis through physical design, static 
 - **Design:** OV7670 Camera I2C/SCCB Configuration Controller (`top`)
 - **Technology Node:** SCL 1.2µm (C1D)
 - **Metal Layers:** 2 (`metal1`, `metal2`)
+- **Standard Cells:** 2,986 cells (1,395 logic gates, 1,309 inverters, 258 flip-flops, 24 buffers)
+- **Cell Area:** 4.25 mm²
 - **Clock Domains:** 
   - `i_top_clk` (20ns period, 50 MHz)
   - `i_top_pclk` (40ns period, 25 MHz)
@@ -32,22 +34,40 @@ To achieve a clean route, a "Nuclear Option" strategy was employed in `pnr/pnr_n
 - **Power Planning:** Strict adherence to 2-layer power ring routing.
 
 **Results:**
-NanoRoute completed successfully, bringing initial DRC violations from over 7,100 down to just **11 violations**.
+NanoRoute completed successfully, reducing DRC violations from over 50 (in the 35% utilization version) down to **11 violations**.
 
 ---
 
-## 3. Signoff & Physical Verification (KLayout)
-Because standard commercial signoff tools (Calibre/Pegasus) were unavailable, the final GDSII was rigorously verified using **KLayout (v0.28.17)** and the foundry's SCL C1D rule decks.
+## 3. Current Signoff Status
 
-Prior to verification, the raw GDSII from Innovus required automated post-processing using a custom Python script (`final_drc_check/generate_perfect_gds.py`) to resolve legacy 2-layer routing violations (e.g., mapping core routing from unsupported layers to `10/0` and relocating IO pins).
+> **⚠️ THIS DESIGN IS NOT YET READY FOR FABRICATION.**
 
-- **DRC (Design Rule Check):** 
-  - Execution: `klayout -b -r c1d_digital.lydrc -rd input=pnr_fixed_final.gds`
-  - Result: **100% Clean.** All geometric constraints, including M1/M2 spacing, widths, and enclosures, pass without a single violation.
-- **LVS (Layout vs Schematic):**
-  - Execution: `klayout -b -r lvs_os_scl_c1d.lvs -rd ...`
-  - Netlist extracted and matched against `pnr_final_yosys_wrapped.spi`.
-  - Result: **100% Clean.** Zero unconnected nets. Zero device mismatches. All 17,018 active devices and internal nets mapped perfectly.
+### Remaining Issues (as of 2026-08-10)
+
+| # | Issue | Status |
+|---|-------|--------|
+| 1 | **4 metal SHORT violations** in clock-gating cells (`enl_reg` blockage conflicts) | `pnr/drc.rpt` |
+| 2 | **7 SPACING violations** (clock-gating + 1 inter-net spacing) | `pnr/drc.rpt` |
+| 3 | **No CTS** performed (ccopt_design never called) | Needs re-run |
+| 4 | **Antenna check** not yet performed | Needs re-run |
+| 5 | **ECO route** for DRC fix not yet completed | Needs re-run |
+
+### Fix Plan
+A fabrication-grade PnR script (`pnr/pnr_signoff_grade.tcl`) has been prepared that addresses all issues:
+- Adds proper CTS using `ccopt_design`
+- Runs `ecoRoute -fix_drc` for remaining violations
+- Exports GDS with correct SCL foundry layer mapping (no post-processing needed)
+- Preserves power distribution vias (no `editDelete`)
+- Runs DRC, connectivity, and antenna checks inside Innovus
+- Produces a single unified GDS for external KLayout verification
+
+### What IS Verified
+
+| ✅ Item | Evidence |
+|---------|----------|
+| **LEC passes** — 335/335 compare points equivalent | `lec/lec.log` |
+| **STA is clean** — 0 setup/hold violations (WNS: +15.90ns setup, +0.45ns hold) | `sta/post_pnr_*.rpt` |
+| **Synthesis correct** — 2,986 cells mapped | `reports/area.rpt`, `reports/gates.rpt` |
 
 ---
 
@@ -66,19 +86,37 @@ Because the design was physically spread out to solve DRCs, cross-coupling capac
 
 ---
 
-## 5. Tape-Out Generation
-The final step merged the routed database with the foundry GDS macros, followed by Python-based post-processing to ensure DRC compliance on the target layers.
-- **Raw PnR GDSII:** `pnr/pnr_final.gds`
-- **Signoff-Verified GDSII:** `final_drc_check/pnr_fixed_final.gds`
-
-The `pnr_fixed_final.gds` file represents the finalized, DRC & LVS clean layout ready for fabrication at the SCL foundry.
+## 5. Logical Equivalence Check (Cadence Conformal)
+- **Golden:** RTL (`rtl/*.v`)
+- **Revised:** Post-PnR netlist (`pnr/pnr_final.v`)
+- **Result:** 335/335 compare points **PASS**
+- **Report:** `lec/lec.log`
 
 ---
 
-## Artifact Summary
-- **Final Netlist:** `pnr/pnr_final.v`
-- **Extracted Parasitics (SPEF):** `pnr/pnr_final.spef`
-- **Final GDSII Layout:** `final_drc_check/pnr_fixed_final.gds`
-- **LVS Report DB:** `final_drc_check/lvs_report.lvsdb`
-- **Timing Reports:** `sta_reports/` and `pnr_reports/`
-- **Synthesis Reports:** `syn_reports/`
+## Repository Structure
+```
+├── rtl/                    # Verilog RTL source files
+├── syn/                    # Synthesis scripts and logs (Cadence Genus)
+├── constraints.sdc         # Timing constraints
+├── floorplanning/          # Floorplan scripts and MMMC setup
+├── pnr/                    # Place-and-route scripts, reports, and outputs
+│   ├── pnr_nuclear.tcl     # Current PnR script (10% util, 40um spacing)
+│   ├── pnr_signoff_grade.tcl  # NEW: Fabrication-grade PnR script
+│   ├── drc.rpt             # Innovus DRC report (11 violations)
+│   └── pnr_final.v         # Post-PnR netlist
+├── sta/                    # PrimeTime STA scripts and reports
+├── lec/                    # Logical equivalence check
+├── reports/                # Synthesis reports (area, power, timing, gates)
+├── final_drc_check/        # KLayout DRC/LVS verification
+│   ├── run_signoff_unified.sh  # NEW: Unified signoff script
+│   └── lvs_os_scl_c1d.lvs     # SCL LVS rule deck
+└── out/                    # Synthesis outputs
+```
+
+---
+
+## Known Limitations
+- **Die size:** 10% core utilization results in a physically large die. This is a cost/yield trade-off necessitated by the 2-layer metal routing constraint.
+- **Clock-gating cells:** The `LTCL11`-based ICG cells have internal routing conflicts with NanoRoute. Disabling clock gating in synthesis (`set_attribute lp_insert_clock_gating false`) may be necessary if ECO routing cannot resolve these.
+- **CDC checking:** Cross-clock-domain checking (recommended in `lec.log`) has not been performed. Three async clock domains exist in this design.
