@@ -15,54 +15,68 @@ The flow covers everything from logic synthesis through physical design, static 
 
 ---
 
-## The 2-Layer Metal Routing Challenge & Solution
+## Current Status
 
-The defining challenge of this project was routing congestion. Modern standard cell densities easily choke older two-layer processes, resulting in thousands of unresolvable DRC shorts.
+> **⚠️ THIS DESIGN IS NOT YET READY FOR FABRICATION.**
 
-Earlier attempts to reach a clean DRC involved "hacking" the GDS—running NanoRoute with high utilization, finding shorts in the clock-gating cells, and then deleting power vias (`editDelete -object_type Via -net VDD`) to blindly pass DRC. This resulted in two disconnected GDS versions, neither of which were truly fabrication-ready.
+### KLayout DRC Results (4,738 violations in `drc_signoff.lyrdb`)
 
-**How we fixed it:**
-We performed a full "Nuclear Option" reset of the physical design to generate a genuinely fabrication-grade, 100% clean layout:
+| Rule | Count | Category | Root Cause |
+|------|-------|----------|------------|
+| Min Boron spacing = 1.5µm | 3,181 | Device-layer | Inter-cell abutment boundaries (flat DRC mode) |
+| Min Boron width = 2.5µm | 602 | Device-layer | Standard cell internal geometry |
+| Exact via width = 1.5µm | 382 | Off-grid | DBU/grid mismatch producing non-Manhattan vias |
+| Via-to-Poly spacing = 1.2µm | 274 | Device-layer | Standard cell internal clearance |
+| **Metal2-to-Metal2 spacing = 1.7µm** | **169** | **Routing** | **LEF OBS vs GDS mismatch: 36 near-shorts (<0.5µm gap)** |
+| Min Nwell width = 4.0µm | 77 | Device-layer | Standard cell internal geometry |
+| Via-to-contact spacing | 39 | Interface | Routing vias too close to cell contacts |
+| Others | 14 | Mixed | Boron-Ndiff, via-via, Metal1, Nwell spacing |
 
-1. **Disabled Clock Gating in Synthesis**: We identified that automated clock gating insertion (Genus `lp_insert_clock_gating`) was instantiating `LTCL11` cells. These specific cells contained internal metal blockages that, when placed on a 2-metal process, created unresolvable shorts with NanoRoute. We re-synthesized the design with clock gating disabled, eliminating the source of the DRC shorts.
-2. **10% Core Utilization**: The design utilization was capped at an extremely low 10%.
-3. **40µm Row & Pin Spacing**: We increased the row spacing to 40µm between every standard cell row, creating massive horizontal `metal1` routing highways. The 105 I/O pins were also spaced at 40µm to prevent pin-access congestion.
-4. **Non-timing-driven Routing**: We disabled timing-driven routing in Innovus, as timing optimization was causing the router to pack wires too densely and create shorts.
-5. **Native GDS Mapping**: We created a unified `pnr_signoff_grade.tcl` script that uses a correct stream-out map directly from Innovus, producing a single, verified GDSII file.
+### Analysis
 
----
+The violations fall into two distinct categories:
 
-## 1. Synthesis (Cadence Genus)
-Logic synthesis was performed using Cadence Genus without clock gating.
-- **Output:** `syn/signoff/top_netlist.v`
-- **Constraints:** `syn/signoff/top_synth.sdc`
+**1. Device-layer violations (4,555 = 96%):** Boron, Nwell, via width, via-to-poly — these are all on layers Innovus never routes. They exist inside the merged standard cell GDS (`core_c1d.gds`). The KLayout DRC deck runs in *flat* mode (no `deep` block), flattening all 100,966 cell instances and flagging inter-cell implant boundaries. 61.5% of Boron spacing violations have gaps <0.5µm — these are at cell abutment edges where implant layers are designed to merge. A hierarchical DRC run may reclassify these.
 
----
+**2. Metal2 routing violations (169 = the critical 4%):** These are real collisions between Innovus's routed Metal2 tracks and the actual Metal2 geometry inside standard cells. The LEF abstract OBS shapes don't perfectly represent the GDS geometry — after merge, the actual metal extends beyond what the LEF declared. Gap measurements from the violation coordinates:
+- 36 critical (<0.5µm, including gaps as small as 0.04µm)
+- 32 severe (0.5–1.0µm)
+- 38 moderate (1.0–1.5µm)
+- 63 marginal (1.5–1.7µm)
 
-## 2. Floorplanning & Place-and-Route (Cadence Innovus)
-- **Script:** `pnr/pnr_signoff_grade.tcl`
-- **Final GDS:** `final_drc_check/pnr_signoff.gds`
-
-**Results:** NanoRoute completed successfully with exactly **0 DRC violations** and perfectly intact power nets.
-
----
-
-## 3. Final Signoff Status: READY FOR FABRICATION
-
-**✅ 100% DRC / LVS Clean**
-
-The single unified GDS file (`pnr_signoff.gds`) was verified using KLayout with the SCL Foundry rule decks. 
-- **DRC:** 0 Violations (`drc_signoff.lyrdb`)
-- **LVS:** Netlists match! (17,018 devices and nets verified successfully, `log.txt`)
+### What IS Verified
 
 | ✅ Item | Evidence |
 |---------|----------|
-| **DRC Clean (Innovus)** | `pnr/drc_final.rpt` |
-| **Connectivity Clean (Innovus)** | `pnr/connectivity_final.rpt` |
-| **DRC Clean (KLayout)** | `final_drc_check/drc_signoff.lyrdb` |
-| **LVS Clean (KLayout)** | `final_drc_check/log.txt` |
+| **Innovus DRC clean** (routing-domain only, pre-merge) | `pnr/drc_final.rpt` |
+| **Connectivity clean** | `pnr/connectivity_final.rpt` |
+| **LVS match** (17,018 devices and nets) | `final_drc_check/log.txt` |
 | **LEC passes** — 335/335 compare points equivalent | `lec/lec.log` |
-| **STA is clean** — 0 setup/hold violations (WNS: +15.90ns setup, +0.45ns hold) | `sta/post_pnr_*.rpt` |
+| **STA clean** — 0 setup/hold violations | `sta/post_pnr_*.rpt` |
+
+### Known Gaps
+- Antenna check report (`antenna_final.rpt`) was not generated
+- `lvs_signoff.lvsdb` database file was not written (text output confirms match but no database for independent verification)
+
+---
+
+## The 2-Layer Metal Routing Challenge
+
+### What Failed (v1)
+The original PnR flow had clock gating enabled, creating `LTCL11` ICG cells with internal metal blockages that produced unresolvable shorts. The "fix" involved deleting all power vias (`editDelete -object_type Via -net VDD/VSS`) and running DRC/LVS against two different GDS files — neither was fabrication-ready.
+
+### What Improved (v1 → v2)
+1. **Disabled Clock Gating** in synthesis — eliminated `LTCL11` blockage shorts entirely
+2. **Single GDS file** — one `pnr_signoff.gds` used for both DRC and LVS
+3. **No power via deletion** — all VDD/VSS vias preserved
+4. **10% core utilization, 40µm row spacing** — massive routing highways
+5. **Non-timing-driven routing** — prevents dense wire packing
+
+### What Still Needs Fixing (v2 → v3)
+1. Metal2 routing vs cell OBS mismatch (169 violations)
+2. Via grid alignment (382 off-grid vias)
+3. Device-layer violations need hierarchical DRC to classify
+4. Antenna check needs to run to completion
 
 ---
 
@@ -70,17 +84,18 @@ The single unified GDS file (`pnr_signoff.gds`) was verified using KLayout with 
 ```
 ├── rtl/                    # Verilog RTL source files
 ├── syn/                    # Synthesis scripts and logs (Cadence Genus)
+│   └── signoff/            # Clock-gating-free synthesis output
 ├── constraints.sdc         # Timing constraints
 ├── floorplanning/          # Floorplan scripts and MMMC setup
 ├── pnr/                    # Place-and-route scripts, reports, and outputs
-│   └── pnr_signoff_grade.tcl  # Fabrication-grade PnR script
+│   └── pnr_signoff_grade.tcl  # Fabrication-grade PnR script (v2)
 ├── sta/                    # PrimeTime STA scripts and reports
 ├── lec/                    # Logical equivalence check
-├── final_drc_check/        # Final verified results ready for tapeout
+├── final_drc_check/        # KLayout DRC/LVS verification
 │   ├── run_signoff.sh         # Unified signoff script
-│   ├── pnr_signoff.gds        # The final, flawless layout
+│   ├── pnr_signoff.gds        # Current layout (4,738 KLayout DRC violations)
 │   ├── pnr_signoff.v          # Final netlist
-│   ├── drc_signoff.lyrdb      # KLayout DRC passing database
+│   ├── drc_signoff.lyrdb      # KLayout DRC report (4,738 violations)
 │   ├── layout_extracted_signoff.cir # Extracted SPICE for LVS
 │   └── log.txt                # Signoff log showing LVS match
 └── out/                    # Synthesis outputs
