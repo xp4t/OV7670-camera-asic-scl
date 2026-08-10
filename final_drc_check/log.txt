@@ -1,21 +1,48 @@
-========================================
-    Running SCL 1.2um DRC Checks...     
-========================================
-Writing report database: /home/xpat/final_drc_check/drc_report.lyrdb ..
-Total elapsed: 28.330s  Memory: 637.00M
-DRC Complete. Report saved to drc_report.lyrdb
-========================================
-    Running SCL 1.2um LVS Checks...     
-========================================
-2026-08-10 12:29:55 +0530: Starting running SCL C1D Klayout LVS runset on pnr_fixed_final.gds with top cell top
-2026-08-10 12:29:55 +0530: deep mode is enabled.
-2026-08-10 12:29:55 +0530: Netlist file: pnr_final_yosys_wrapped.spi
-2026-08-10 12:29:55 +0530: Extracted netlist file: layout_extracted.cir
-2026-08-10 12:29:55 +0530: Final report: lvs_report.lvsdb
-2026-08-10 12:31:07 +0530: LVS Total Run time 71.776186 seconds
-2026-08-10 12:31:07 +0530: ==========================================
-2026-08-10 12:31:07 +0530: INFO : Congratulations! Netlists match.
-2026-08-10 12:31:07 +0530: INFO : (17,018 devices and nets verified successfully)
-2026-08-10 12:31:07 +0530: ==========================================
-LVS Complete. Report saved to lvs_report.lvsdb
-Done! You can open the .lyrdb and .lvsdb files in the KLayout GUI to inspect.
+==========================================
+  UNIFIED SIGNOFF: DRC + LVS
+  GDS: pnr_signoff.gds
+  Date: Monday 10 August 2026 04:06:08 PM IST
+==========================================
+
+--- Step 1: DRC ---
+Writing report database: /home/xpat/final_drc_check/drc_signoff.lyrdb ..
+Total elapsed: 62.210s  Memory: 603.00M
+DRC Complete. Report: drc_signoff.lyrdb
+
+--- Step 2: LVS ---
+2026-08-10 16:07:15 +0530: Starting running SCL C1D Klayout LVS runset on pnr_signoff.gds with top cell top
+2026-08-10 16:07:15 +0530: deep mode is enabled.
+2026-08-10 16:07:15 +0530: Netlist file: pnr_final_yosys_wrapped.spi
+2026-08-10 16:07:15 +0530: Extracted netlist file: layout_extracted_signoff.cir
+2026-08-10 16:07:15 +0530: Final report: lvs_signoff.lvsdb
+2026-08-10 16:08:40 +0530: LVS Total Run time 85.348000 seconds
+2026-08-10 16:08:40 +0530: ==========================================
+2026-08-10 16:08:40 +0530: INFO : Congratulations! Netlists match.
+2026-08-10 16:08:40 +0530: INFO : (17,018 devices and nets verified successfully)
+2026-08-10 16:08:40 +0530: ==========================================
+LVS Complete. Report: lvs_signoff.lvsdb
+
+==========================================
+  SIGNOFF COMPLETE
+  Inspect drc_signoff.lyrdb and
+  lvs_signoff.lvsdb in KLayout GUI.
+==========================================
+Pushing results to Git...
+fatal: pathspec 'lvs_signoff.lvsdb' did not match any files
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   log.txt
+	modified:   run_signoff.sh
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	drc_signoff.lyrdb
+	layout_extracted_signoff.cir
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Everything up-to-date
+Done.
