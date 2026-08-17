@@ -15,7 +15,7 @@ setMultiCpuUsage -localCpu 4
 # 1. DESIGN INITIALIZATION
 set DESIGN_NAME top
 set NETLIST ../syn/signoff/top_netlist.v
-set LEF_FILES "../lef/tech_c1d.lef ../lef/core_c1d.lef ../lef/corner_c1d.lef ../lef/io_c1d.lef"
+set LEF_FILES "../lef/tech_c1d.lef ../lef/core_c1d_signoff.lef ../lef/corner_c1d.lef ../lef/io_c1d.lef"
 set MMMC_FILE ../floorplanning/mmmc_signoff.tcl
 
 set init_verilog $NETLIST
@@ -28,6 +28,12 @@ set init_pwr_net VDD
 set init_gnd_net VSS
 
 init_design
+
+# Match the synthesis dont-use list. optDesign/ecoRoute can otherwise
+# re-introduce cells that violate SCL C1D rules in isolation.
+foreach cell_name {AOI401 NND300 NND501 NOR701 OR3101 ORND01 DFPC11 LTPR11} {
+    setDontUse $cell_name true
+}
 
 # 2. SET MANUFACTURING GRID
 # The SCL cell library uses 0.05um grid. Ensure Innovus snaps to the same grid
@@ -80,6 +86,37 @@ editPin -pin [lrange $all_pins [expr 3*$q] end] -edge 3 \
 
 # 6. PLACEMENT
 setPlaceMode -fp false
+
+# Force every inter-cell gap to be either 0 or >= 6.0um, via 3.0um (300 SITEs of
+# 0.01um) of padding on each side of every non-filler cell.
+#
+# Filler boron sits at cell y 24.55..48.7 and filler nwell at 23.7..48.7, but the
+# logic cells put boron and nwell in different vertical bands (INVR01 boron
+# 1.65..41.25, AND201 2.30..43.15, DFCL11 1.20..46.50). Where a filler abuts a
+# logic cell their bands do not line up, so the filler side protrudes as a
+# vertical finger whose width is the width of the filler run. A run narrower than
+# 2.5um then fails 5.1.1 (boron width) and, at run + 1.5um of nwell overhang
+# narrower than 4.0um, fails 1.1.1 (nwell width). 300 SITEs also sets the
+# filler run at each row end, which is bounded by the padding rather than by a
+# neighbour -- at 200 that run was 2.0um and produced the only remaining width
+# violations, measured at exactly 2.20um of boron and 3.50um of nwell.
+#
+# So filling every gap is not enough on its own: filling a sub-2.5um gap only
+# trades a 5.7.1 spacing violation for a 5.1.1 width violation. Measured proof --
+# nwell violations of exactly 3.73um and 3.02um, i.e. filler runs of 2.23um and
+# 1.52um. A 3.0um-per-side floor makes the narrowest possible finger 3.0um of
+# boron and 4.5um of nwell.
+#
+# Cell padding rather than -place_detail_legalization_inst_gap: that option caps
+# out well below what is needed here and Innovus silently discards it
+# ("IMPSP-2036: Ignoring ... value of 400 ... as the value is too large").
+# Fillers are never padded -- they must abut to keep the implant strip continuous.
+foreach lib_cell [dbGet -u head.libCells.name] {
+    if {[regexp {^FILLER} $lib_cell]} { continue }
+    catch {specifyCellPad $lib_cell -left 300 -right 300}
+}
+reportCellPad > cellpad.rpt
+
 placeDesign
 
 # 7. PRE-CTS OPTIMIZATION
@@ -92,9 +129,12 @@ optDesign -preCTS
 # The 50 MHz clock on a 1.2um process has enormous slack; CTS is unnecessary.
 
 # 9. ROUTING
-# Timing-driven routing (v1 produced 0 Innovus DRC with this).
-# Non-timing-driven was tested and actually produced MORE violations (274 vs 0).
-setNanoRouteMode -quiet -routeWithTimingDriven 1
+# Timing-driven routing pulls the AAE delay engine into the routing loop, and it
+# crashes there on this design ("Crashed in AAE on net Unknown net", inside
+# goOptFlow::Config::routeDesign). A 50 MHz clock on a 1.2um process has enormous
+# slack, so timing-driven routing buys nothing worth that risk.
+setDelayCalMode -SIAware false
+setNanoRouteMode -quiet -routeWithTimingDriven 0
 setNanoRouteMode -quiet -routeWithSiDriven 0
 setNanoRouteMode -quiet -drouteEndIteration 60
 setNanoRouteMode -quiet -routeBottomRoutingLayer default
@@ -114,7 +154,21 @@ setNanoRouteMode -drouteEndIteration 60
 ecoRoute -fix_drc
 
 # 12. ADD FILLERS
-addFiller -cell {FILLER4 FILLER3 FILLER2 FILLER1} -prefix FILL -doDRC
+# FILLER5 is mandatory, not optional. SITE CORE is 0.01um wide, so placement
+# leaves gaps at arbitrary 0.01um multiples (measured: 3981 gaps, 2451 of them
+# under 1um -- 0.06, 0.11, 0.22, 0.45, 0.88um ...). FILLER1-4 are 8/4/2/1um and
+# cannot tile those remainders. Logic cells have zero boron overhang, so any
+# residual gap breaks the P+ implant strip and produces 5.7.1 boron-spacing
+# violations; an isolated FILLER3/FILLER4 also fails 5.1.1 boron width (its
+# boron is only 2.2/1.2um) and 1.1.1 nwell width. FILLER5 is 0.01um = exactly
+# one site, which closes every remainder and makes each row one continuous
+# implant strip.
+# Two passes: the coarse fillers DRC-aware, then FILLER5 to close the residue.
+# Keeping FILLER5 out of the -doDRC pass matters -- roughly 187k of them are
+# needed, and DRC-checking each one is far slower than the fill itself.
+# -fitGap picks filler combinations that avoid leaving single-site gaps.
+addFiller -cell {FILLER1 FILLER2 FILLER3 FILLER4} -prefix FILL -doDRC -fitGap
+addFiller -cell {FILLER5} -prefix FILLRES
 
 # 13. FINAL VERIFICATION (Inside Innovus)
 verify_drc -report drc_final.rpt -limit 1000
@@ -122,7 +176,10 @@ verifyConnectivity -type all -report connectivity_final.rpt
 verifyProcessAntenna -report antenna_final.rpt
 
 # 14. SAVE DESIGN
-saveNetlist pnr_signoff.v
+# -includePowerGround: LVS needs VDD/VSS on every instance. Without it the
+# SPICE conversion leaves those pins dangling as _NC nets.
+saveNetlist pnr_signoff.v -includePowerGround
+saveNetlist pnr_signoff_flat.v -includePowerGround -flat
 defOut -routing pnr_signoff.def
 saveDesign pnr_signoff.enc
 
@@ -147,7 +204,7 @@ close $map_file
 streamOut pnr_signoff.gds \
     -mapFile gds_signoff.map \
     -attachNetName 1 \
-    -merge {../gds/core_c1d.gds ../gds/io_c1d.gds} \
+    -merge {../gds/core_c1d_signoff.gds ../gds/io_c1d.gds} \
     -units 1000 \
     -mode ALL
 

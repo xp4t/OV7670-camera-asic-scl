@@ -1,6 +1,6 @@
 #@ # 
 #@ # Running pt_shell Version T-2022.03-SP2 for linux64 -- Jun 01, 2022
-#@ # Date:   Thu Aug  6 17:20:17 2026
+#@ # Date:   Mon Aug 17 14:32:04 2026
 #@ # Run by: rithwik@smartlab6.calicut.nielit.in
 #@ 
 
@@ -886,423 +886,113 @@ source -echo -verbose run_pt.tcl
 #@ 
 #@ # Read constraints
 #@ source -echo -verbose $env(SDC_FILE)
-#@ # -- Starting source ../syn/sweep/E4/top_synth.sdc
+#@ # -- Starting source ../constraints.sdc
 
-#@ # ####################################################################
+#@ #############################################################################
+#@ # constraints.sdc — OV7670 Camera ASIC (top)
+#@ # Target  : SCL 1.2um Digital (C1D)
+#@ # Tool    : Cadence Genus
+#@ #
+#@ # Clock names, periods, I/O delays, and false-path exceptions carried over
+#@ # from the prior SAED32 Design Compiler script (synth.tcl), since this is
+#@ # the same RTL retargeted to the SCL 1.2um process. Two items from that
+#@ # script are SAED32-specific and are NOT included here — see notes at the
+#@ # bottom of this file.
+#@ #############################################################################
 #@ 
-#@ #  Created by Genus(TM) Synthesis Solution 21.14-s082_1 on Thu Aug 06 11:12:40 IST 2026
+#@ # ---------------------------------------------------------------------------
+#@ # Clocks
+#@ # ---------------------------------------------------------------------------
+#@ set CLK_TOP_PERIOD      20.0    ;# i_top_clk  -> 50 MHz
+#@ set CLK_PCLK_PERIOD     40.0    ;# i_top_pclk -> 25 MHz (camera pixel clock)
+#@ set CLK_VGA_PERIOD      40.0    ;# w_clk25m   -> 25 MHz (VGA pixel clock)
 #@ 
-#@ # ####################################################################
+#@ set CLK_TOP_NAME        i_top_clk
+#@ set CLK_PCLK_NAME       i_top_pclk
+#@ set CLK_VGA_NAME        w_clk25m
 #@ 
-#@ set sdc_version 2.0
+#@ create_clock -name $CLK_TOP_NAME  -period $CLK_TOP_PERIOD  [get_ports $CLK_TOP_NAME]
+#@ create_clock -name $CLK_PCLK_NAME -period $CLK_PCLK_PERIOD [get_ports $CLK_PCLK_NAME]
 #@ 
-#@ set_units -capacitance 1000fF
-#@ set_units -time 1000ps
+#@ # Confirmed in top.v: w_clk25m is a top-level input port (line 7,
+#@ # "input wire w_clk25m"), despite the w_ prefix. It's a real primary
+#@ # clock input, not internally generated -- treat as such.
+#@ create_clock -name $CLK_VGA_NAME -period $CLK_VGA_PERIOD [get_ports $CLK_VGA_NAME]
 #@ 
-#@ # Set the current design
-#@ current_design top
+#@ # i_top_clk, i_top_pclk, and w_clk25m are three independent clock domains:
+#@ # - i_top_clk:  system clock
+#@ # - w_clk25m:   drives VGA logic AND feeds o_top_xclk to the camera sensor
+#@ # - i_top_pclk: camera pixel clock, generated OFF-CHIP by the sensor from
+#@ #               the XCLK it receives (i.e. derived from w_clk25m, but
+#@ #               through external analog sensor timing Genus can't model
+#@ #               as a clean divide relationship)
+#@ # All three are treated as mutually asynchronous. NOTE: the original DC
+#@ # script only declared i_top_clk vs i_top_pclk as async and never included
+#@ # w_clk25m in that grouping -- this was a gap in the original script, added
+#@ # here for correctness.
+#@ set_clock_groups -name CG_ASYNC_DOMAINS -asynchronous \
+#@     -group [get_clocks $CLK_TOP_NAME] \
+#@     -group [get_clocks $CLK_PCLK_NAME] \
+#@     -group [get_clocks $CLK_VGA_NAME]
 #@ 
-#@ create_clock -name "i_top_clk" -period 20.0 -waveform {0.0 10.0} [get_ports i_top_clk]
-#@ create_clock -name "i_top_pclk" -period 40.0 -waveform {0.0 20.0} [get_ports i_top_pclk]
-#@ create_clock -name "w_clk25m" -period 40.0 -waveform {0.0 20.0} [get_ports w_clk25m]
-#@ set_clock_transition 0.1 [get_clocks i_top_clk]
-#@ set_clock_transition 0.1 [get_clocks i_top_pclk]
-#@ set_clock_transition 0.1 [get_clocks w_clk25m]
-#@ set_load -pin_load 0.136 [get_ports o_top_cam_done]
-#@ set_load -pin_load 0.136 [get_ports o_top_reset]
-#@ set_load -pin_load 0.136 [get_ports o_top_pwdn]
-#@ set_load -pin_load 0.136 [get_ports o_top_xclk]
-#@ set_load -pin_load 0.136 [get_ports o_top_sda_out]
-#@ set_load -pin_load 0.136 [get_ports o_top_sda_oe]
-#@ set_load -pin_load 0.136 [get_ports o_top_sioc]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_red[3]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_red[2]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_red[1]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_red[0]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_green[3]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_green[2]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_green[1]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_green[0]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_blue[3]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_blue[2]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_blue[1]}]
-#@ set_load -pin_load 0.136 [get_ports {o_top_vga_blue[0]}]
-#@ set_load -pin_load 0.136 [get_ports o_top_vga_vsync]
-#@ set_load -pin_load 0.136 [get_ports o_top_vga_hsync]
-#@ set_load -pin_load 0.136 [get_ports o_bram_clka]
-#@ set_load -pin_load 0.136 [get_ports o_bram_ena]
-#@ set_load -pin_load 0.136 [get_ports o_bram_wea]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[18]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[17]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[16]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[15]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[14]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[13]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[12]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[11]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[10]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[9]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[8]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[7]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[6]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[5]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[4]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[3]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[2]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[1]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addra[0]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[11]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[10]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[9]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[8]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[7]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[6]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[5]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[4]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[3]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[2]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[1]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_dina[0]}]
-#@ set_load -pin_load 0.136 [get_ports o_bram_clkb]
-#@ set_load -pin_load 0.136 [get_ports o_bram_enb]
-#@ set_load -pin_load 0.136 [get_ports o_bram_web]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[18]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[17]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[16]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[15]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[14]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[13]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[12]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[11]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[10]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[9]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[8]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[7]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[6]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[5]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[4]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[3]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[2]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[1]}]
-#@ set_load -pin_load 0.136 [get_ports {o_bram_addrb[0]}]
-#@ set_false_path -from [get_ports i_top_rst]
-#@ set_clock_groups -name "CG_ASYNC_DOMAINS" -asynchronous -group [get_clocks i_top_clk] -group [get_clocks i_top_pclk] -group [get_clocks w_clk25m]
-#@ group_path -weight 1.000000 -name cg_enable_group_i_top_clk -through [list \
-#@   [get_pins OV7670_cam/cam_btn_start_db/CG__RC_CG_HIER_INST1/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST5/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST6/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST7/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST8/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST9/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST10/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST11/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST12/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST13/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST14/enable]  \
-#@   [get_pins top_btn_db/CG__RC_CG_HIER_INST18/enable]  \
-#@   [get_pins OV7670_cam/cam_btn_start_db/CG__RC_CG_HIER_INST1/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST5/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST6/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST7/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST8/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST9/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST10/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST11/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST12/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST13/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST14/enable]  \
-#@   [get_pins top_btn_db/CG__RC_CG_HIER_INST18/enable]  \
-#@   [get_pins OV7670_cam/cam_btn_start_db/CG__RC_CG_HIER_INST1/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST5/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST6/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST7/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/OV7670_config/CG__RC_CG_HIER_INST8/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST9/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST10/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST11/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST12/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST13/enable]  \
-#@   [get_pins OV7670_cam/configure_cam/SCCB_HERE/CG__RC_CG_HIER_INST14/enable]  \
-#@   [get_pins top_btn_db/CG__RC_CG_HIER_INST18/enable] ]
-#@ group_path -weight 1.000000 -name cg_enable_group_i_top_pclk -through [list \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST2/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST3/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST4/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST2/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST3/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST4/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST2/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST3/enable]  \
-#@   [get_pins OV7670_cam/cam_pixels/CG__RC_CG_HIER_INST4/enable] ]
-#@ group_path -weight 1.000000 -name cg_enable_group_w_clk25m -through [list \
-#@   [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enable]  \
-#@   [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enable]  \
-#@   [get_pins display_interface/CG__RC_CG_HIER_INST15/enable]  \
-#@   [get_pins display_interface/CG__RC_CG_HIER_INST15/enable]  \
-#@   [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enable]  \
-#@   [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enable]  \
-#@   [get_pins display_interface/CG__RC_CG_HIER_INST15/enable]  \
-#@   [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST16/enable]  \
-#@   [get_pins display_interface/vga_timing_signals/CG__RC_CG_HIER_INST17/enable] ]
-#@ set_clock_gating_check -setup 0.0 
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_rst]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_cam_start]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[7]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[6]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[5]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[4]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[3]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[2]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[1]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {i_top_pix_byte[0]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_pix_vsync]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_pix_href]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports i_top_sda_in]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_rst]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_cam_start]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[7]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[6]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[5]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[4]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[3]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[2]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[1]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {i_top_pix_byte[0]}]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_pix_vsync]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_pix_href]
-#@ set_input_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports i_top_sda_in]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_cam_done]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_reset]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_pwdn]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_xclk]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_sda_out]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_sda_oe]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_sioc]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[3]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[2]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[1]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_red[0]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[3]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[2]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[1]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_green[0]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[3]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[2]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[1]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports {o_top_vga_blue[0]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_vga_vsync]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -max 4.0 [get_ports o_top_vga_hsync]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_cam_done]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_reset]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_pwdn]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_xclk]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_sda_out]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_sda_oe]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_sioc]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[3]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[2]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[1]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_red[0]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[3]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[2]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[1]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_green[0]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[3]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[2]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[1]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports {o_top_vga_blue[0]}]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_vga_vsync]
-#@ set_output_delay -clock [get_clocks i_top_clk] -add_delay -min 0.5 [get_ports o_top_vga_hsync]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports o_bram_clka]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports o_bram_ena]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports o_bram_wea]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[18]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[17]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[16]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[15]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[14]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[13]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[12]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[11]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[10]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[9]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[8]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[7]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[6]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[5]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[4]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[3]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[2]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[1]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_addra[0]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[11]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[10]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[9]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[8]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[7]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[6]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[5]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[4]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[3]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[2]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[1]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -max 4.0 [get_ports {o_bram_dina[0]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports o_bram_clka]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports o_bram_ena]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports o_bram_wea]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[18]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[17]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[16]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[15]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[14]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[13]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[12]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[11]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[10]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[9]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[8]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[7]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[6]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[5]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[4]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[3]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[2]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[1]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_addra[0]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[11]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[10]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[9]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[8]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[7]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[6]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[5]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[4]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[3]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[2]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[1]}]
-#@ set_output_delay -clock [get_clocks i_top_pclk] -add_delay -min 0.5 [get_ports {o_bram_dina[0]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports o_bram_clkb]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports o_bram_enb]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports o_bram_web]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[18]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[17]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[16]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[15]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[14]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[13]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[12]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[11]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[10]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[9]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[8]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[7]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[6]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[5]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[4]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[3]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[2]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[1]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {o_bram_addrb[0]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports o_bram_clkb]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports o_bram_enb]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports o_bram_web]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[18]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[17]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[16]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[15]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[14]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[13]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[12]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[11]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[10]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[9]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[8]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[7]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[6]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[5]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[4]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[3]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[2]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[1]}]
-#@ set_output_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {o_bram_addrb[0]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[11]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[10]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[9]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[8]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[7]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[6]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[5]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[4]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[3]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[2]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[1]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -max 4.0 [get_ports {i_bram_doutb[0]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[11]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[10]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[9]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[8]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[7]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[6]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[5]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[4]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[3]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[2]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[1]}]
-#@ set_input_delay -clock [get_clocks w_clk25m] -add_delay -min 0.5 [get_ports {i_bram_doutb[0]}]
-#@ set_max_fanout 16.000 [current_design]
-#@ set_max_transition 1.0 [current_design]
-#@ set_input_transition 0.15 [get_ports i_top_clk]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_rst]
-#@ set_input_transition 0.15 [get_ports w_clk25m]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_cam_start]
-#@ set_input_transition 0.15 [get_ports i_top_pclk]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[7]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[6]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[5]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[4]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[3]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[2]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[1]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_top_pix_byte[0]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_pix_vsync]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_pix_href]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports i_top_sda_in]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[11]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[10]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[9]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[8]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[7]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[6]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[5]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[4]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[3]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[2]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[1]}]
-#@ set_driving_cell -lib_cell INVR04 -library ss_125_2p45 -pin "OUT1" [get_ports {i_bram_doutb[0]}]
-#@ set_clock_uncertainty -setup 0.1 [get_clocks i_top_clk]
-#@ set_clock_uncertainty -hold 0.05 [get_clocks i_top_clk]
-#@ set_clock_uncertainty -setup 0.1 [get_clocks i_top_pclk]
-#@ set_clock_uncertainty -hold 0.05 [get_clocks i_top_pclk]
-#@ set_clock_uncertainty -setup 0.1 [get_clocks w_clk25m]
-#@ set_clock_uncertainty -hold 0.05 [get_clocks w_clk25m]
-#@ # -- End source ../syn/sweep/E4/top_synth.sdc
+#@ set_clock_uncertainty -setup 0.10 [all_clocks]
+#@ set_clock_uncertainty -hold  0.05 [all_clocks]
+#@ set_clock_transition   0.10 [all_clocks]
+#@ 
+#@ # ---------------------------------------------------------------------------
+#@ # I/O delays
+#@ # ---------------------------------------------------------------------------
+#@ set NON_CLOCK_INPUTS [remove_from_collection [all_inputs] \
+#@     [get_ports "$CLK_TOP_NAME $CLK_PCLK_NAME $CLK_VGA_NAME"]]
+#@ 
+#@ set_input_delay  -max 4.0 -clock $CLK_TOP_NAME $NON_CLOCK_INPUTS
+#@ set_input_delay  -min 0.5 -clock $CLK_TOP_NAME $NON_CLOCK_INPUTS
+#@ set_output_delay -max 4.0 -clock $CLK_TOP_NAME [all_outputs]
+#@ set_output_delay -min 0.5 -clock $CLK_TOP_NAME [all_outputs]
+#@ 
+#@ set_input_transition 0.15 [all_inputs]
+#@ 
+#@ # ---------------------------------------------------------------------------
+#@ # External BRAM I/O delays (domain-specific overrides)
+#@ # Port A (write): driven by i_top_pclk domain
+#@ # Port B (read):  driven by w_clk25m domain
+#@ # ---------------------------------------------------------------------------
+#@ set BRAM_WR_PORTS [get_ports {o_bram_clka o_bram_ena o_bram_wea \
+#@     o_bram_addra* o_bram_dina*}]
+#@ set BRAM_RD_PORTS [get_ports {o_bram_clkb o_bram_enb o_bram_web \
+#@     o_bram_addrb*}]
+#@ 
+#@ set_output_delay -max 4.0 -clock $CLK_PCLK_NAME $BRAM_WR_PORTS
+#@ set_output_delay -min 0.5 -clock $CLK_PCLK_NAME $BRAM_WR_PORTS
+#@ 
+#@ set_output_delay -max 4.0 -clock $CLK_VGA_NAME  $BRAM_RD_PORTS
+#@ set_output_delay -min 0.5 -clock $CLK_VGA_NAME  $BRAM_RD_PORTS
+#@ 
+#@ # i_bram_doutb returns from external SRAM on the read clock domain
+#@ set_input_delay  -max 4.0 -clock $CLK_VGA_NAME [get_ports i_bram_doutb*]
+#@ set_input_delay  -min 0.5 -clock $CLK_VGA_NAME [get_ports i_bram_doutb*]
+#@ 
+#@ # ---------------------------------------------------------------------------
+#@ # Drive / Load — UNRESOLVED, see notes at bottom
+#@ # ---------------------------------------------------------------------------
+#@ # Original DC script used SAED32 cells INVX4_RVT (driving cell) and
+#@ # INVX1_RVT (load reference) — these do not exist in the SCL 1.2um library.
+#@ # Replace <SCL_INV_CELL> / <SCL_INV_PIN> below with actual cell/pin names
+#@ # from your SCL .lib once you've confirmed them (open the .lib and search
+#@ # for an inverter cell, e.g. grep -i "^cell (INV" lib/nldm_tt_27_1p5.lib).
+#@ #
+#@ set_driving_cell -lib_cell INVR04 -library LS_TT -pin OUT1 $NON_CLOCK_INPUTS
+#@ # FIX: load_of LS_TT/INVR01/IN1 failed with TUI-61 "object not found" --
+#@ # LS_TT is our own create_library_set alias, not the real internal Liberty
+#@ # library name Genus uses for object lookup (the log shows the actual
+#@ # names are things like 'ss_125_2p45', 'scl1u_pads_max' -- taken straight
+#@ # from each .lib's internal `library (...)` statement, not our MMMC
+#@ # names). Rather than hardcode the real tt-corner library name, use
+#@ # get_lib_pins with a wildcarded library so Genus searches across
+#@ # whatever's loaded instead of requiring an exact name match.
+#@ set_load [expr {4 * [load_of [get_lib_pins */INVR01/IN1]]}] [all_outputs]
+#@ # -- End source ../constraints.sdc
 
-#@ 
-#@ # Read parasitics if this is a post-route or post-floorplan run with SPEF
-#@ if {[info exists env(SPEF_FILE)] && $env(SPEF_FILE) != ""} {
-#@     read_parasitics $env(SPEF_FILE)
-#@ }
-#@ 
-#@ # Update timing and check setup/hold
-#@ update_timing
-#@ check_timing
-#@ 
-#@ # Generate Reports
-#@ report_timing -delay_type max > $env(STAGE)_setup.rpt
-#@ report_timing -delay_type min > $env(STAGE)_hold.rpt
-#@ report_qor > $env(STAGE)_qor.rpt
-#@ report_constraints -all_violators > $env(STAGE)_violators.rpt
-#@ 
-#@ exit
-#@ if { [namespace which -command __pre_quit_tcl_procs] == "::__pre_quit_tcl_procs" } {   __pre_quit_tcl_procs}
+#@ # -- End source run_pt.tcl
 
+if { [namespace which -command __pre_quit_tcl_procs] == "::__pre_quit_tcl_procs" } {   __pre_quit_tcl_procs}

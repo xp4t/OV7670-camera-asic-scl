@@ -1,104 +1,289 @@
 # OV7670 Camera Configuration ASIC (SCL 1.2µm)
 
-This repository contains the full ASIC implementation flow for the OV7670 camera configuration interface, targeting the **SCL 1.2µm (C1D) two-layer metal process**. 
+Full RTL-to-GDSII flow for the OV7670 camera configuration interface on the
+**SCL 1.2µm (C1D) two-layer-metal process**: Genus synthesis, Innovus place and
+route, PrimeTime STA, and KLayout DRC/LVS signoff against the vendor deck.
 
-The flow covers everything from logic synthesis through physical design, static timing analysis, and final signoff GDSII generation, explicitly tailored to overcome the extreme routing challenges of a legacy two-layer process.
-
-## Project Overview
 - **Design:** OV7670 Camera I2C/SCCB Configuration Controller (`top`)
-- **Technology Node:** SCL 1.2µm (C1D)
-- **Metal Layers:** 2 (`metal1`, `metal2`)
-- **Clock Domains:** 
-  - `i_top_clk` (20ns period, 50 MHz)
-  - `i_top_pclk` (40ns period, 25 MHz)
-  - `w_clk25m` (40ns period, 25 MHz)
+- **Technology:** SCL 1.2µm (C1D), 2 metal layers (`metal1`, `metal2`)
+- **Clocks:** `i_top_clk` 50 MHz, `i_top_pclk` 25 MHz, `w_clk25m` 25 MHz
 
 ---
 
-## Current Status
+## Signoff status
 
-> **⚠️ THIS DESIGN IS NOT YET READY FOR FABRICATION.**
+### KLayout DRC — vendor deck (`c1d_digital.drc`)
 
-### KLayout DRC Results (4,738 violations in `drc_signoff.lyrdb`)
+Reference on the pre-fix layout: **4,743** violations.
 
-| Rule | Count | Category | Root Cause |
-|------|-------|----------|------------|
-| Min Boron spacing = 1.5µm | 3,181 | Device-layer | Inter-cell abutment boundaries (flat DRC mode) |
-| Min Boron width = 2.5µm | 602 | Device-layer | Standard cell internal geometry |
-| Exact via width = 1.5µm | 382 | Off-grid | DBU/grid mismatch producing non-Manhattan vias |
-| Via-to-Poly spacing = 1.2µm | 274 | Device-layer | Standard cell internal clearance |
-| **Metal2-to-Metal2 spacing = 1.7µm** | **169** | **Routing** | **LEF OBS vs GDS mismatch: 36 near-shorts (<0.5µm gap)** |
-| Min Nwell width = 4.0µm | 77 | Device-layer | Standard cell internal geometry |
-| Via-to-contact spacing | 39 | Interface | Routing vias too close to cell contacts |
-| Others | 14 | Mixed | Boron-Ndiff, via-via, Metal1, Nwell spacing |
+| Rule | before | after |
+|---|---:|---:|
+| 5.7.1 minimum boron spacing 1.5µm | 3,186 | **0** |
+| 5.1.1 / 5.1.2 minimum boron width 2.5µm | 602 | **0** |
+| 9.1.1 exact via width 1.5µm | 382 | **0** |
+| 9.4.1 minimum via-to-poly spacing 1.2µm | 274 | **0** |
+| 10.1.1 minimum metal2 spacing 1.7µm | 169 | **0** |
+| 1.1.1 / 1.1.2 minimum nwell width 4.0µm | 77 | **0** |
+| 9.3.1 minimum via-to-contact spacing 1.5µm | 39 | **0** |
+| 5.5.1 minimum boron-to-Ndiff spacing 0.7µm | 5 | **0** |
+| 9.2.1 minimum via-to-via spacing 1.5µm | 4 | **0** |
+| 8.1.1 minimum metal1 spacing 1.5µm | 2 | **0** |
+| GUIDELINE-6 via on diffusion edge | 2 | **0** |
+| 1.2.2 minimum nwell spacing 7.0µm | 1 | **0** |
+| 3.1.1 nwell_rev XOR nwell | 0 | **0** |
 
-### Analysis
+3.1.1 did not appear in the original report — it only surfaced once everything
+else was clean, as two slivers of exactly 2.000 × 0.100µm. `nwell_rev` is a
+derived mask ("reversal of N-Well with 2µm oversize each side"), and oversizing
+is not distributive over union: sizing the merged nwell rounds a 0.1µm step
+differently from unioning the cells' pre-sized copies.
+`scripts/regen_nwell_rev.py` rebuilds the layer from the finished nwell, which
+makes the rule exact by construction. The layer is referenced nowhere else in
+the deck.
 
-The violations fall into two distinct categories:
+Innovus `verify_drc`: no violations. `verifyConnectivity`: no problems or warnings.
 
-**1. Device-layer violations (4,555 = 96%):** Boron, Nwell, via width, via-to-poly — these are all on layers Innovus never routes. They exist inside the merged standard cell GDS (`core_c1d.gds`). The KLayout DRC deck runs in *flat* mode (no `deep` block), flattening all 100,966 cell instances and flagging inter-cell implant boundaries. 61.5% of Boron spacing violations have gaps <0.5µm — these are at cell abutment edges where implant layers are designed to merge. A hierarchical DRC run may reclassify these.
+Reproduce with `./run_flow.csh drc`, or the ~10s pre-check
+`python3.11 scripts/drc_check.py pnr/pnr_signoff.gds top`.
 
-**2. Metal2 routing violations (169 = the critical 4%):** These are real collisions between Innovus's routed Metal2 tracks and the actual Metal2 geometry inside standard cells. The LEF abstract OBS shapes don't perfectly represent the GDS geometry — after merge, the actual metal extends beyond what the LEF declared. Gap measurements from the violation coordinates:
-- 36 critical (<0.5µm, including gaps as small as 0.04µm)
-- 32 severe (0.5–1.0µm)
-- 38 moderate (1.0–1.5µm)
-- 63 marginal (1.5–1.7µm)
+### LVS: clean
 
-### What IS Verified
+KLayout LVS against `lvs_os_scl_c1d.lvs`, run on the delivered
+`pnr/pnr_signoff_final.gds`:
 
-| ✅ Item | Evidence |
-|---------|----------|
-| **Innovus DRC clean** (routing-domain only, pre-merge) | `pnr/drc_final.rpt` |
-| **Connectivity clean** | `pnr/connectivity_final.rpt` |
-| **LVS match** (17,018 devices and nets) | `final_drc_check/log.txt` |
-| **LEC passes** — 335/335 compare points equivalent | `lec/lec.log` |
-| **STA clean** — 0 setup/hold violations | `sta/post_pnr_*.rpt` |
-
-### Known Gaps
-- Antenna check report (`antenna_final.rpt`) was not generated
-- `lvs_signoff.lvsdb` database file was not written (text output confirms match but no database for independent verification)
-
----
-
-## The 2-Layer Metal Routing Challenge
-
-### What Failed (v1)
-The original PnR flow had clock gating enabled, creating `LTCL11` ICG cells with internal metal blockages that produced unresolvable shorts. The "fix" involved deleting all power vias (`editDelete -object_type Via -net VDD/VSS`) and running DRC/LVS against two different GDS files — neither was fabrication-ready.
-
-### What Improved (v1 → v2)
-1. **Disabled Clock Gating** in synthesis — eliminated `LTCL11` blockage shorts entirely
-2. **Single GDS file** — one `pnr_signoff.gds` used for both DRC and LVS
-3. **No power via deletion** — all VDD/VSS vias preserved
-4. **10% core utilization, 40µm row spacing** — massive routing highways
-5. **Non-timing-driven routing** — prevents dense wire packing
-
-### What Still Needs Fixing (v2 → v3)
-1. Metal2 routing vs cell OBS mismatch (169 violations)
-2. Via grid alignment (382 off-grid vias)
-3. Device-layer violations need hierarchical DRC to classify
-4. Antenna check needs to run to completion
-
----
-
-## Repository Structure
 ```
-├── rtl/                    # Verilog RTL source files
-├── syn/                    # Synthesis scripts and logs (Cadence Genus)
-│   └── signoff/            # Clock-gating-free synthesis output
-├── constraints.sdc         # Timing constraints
-├── floorplanning/          # Floorplan scripts and MMMC setup
-├── pnr/                    # Place-and-route scripts, reports, and outputs
-│   └── pnr_signoff_grade.tcl  # Fabrication-grade PnR script (v2)
-├── sta/                    # PrimeTime STA scripts and reports
-├── lec/                    # Logical equivalence check
-├── final_drc_check/        # KLayout DRC/LVS verification
-│   ├── run_signoff.sh         # Unified signoff script
-│   ├── pnr_signoff.gds        # Current layout (4,738 KLayout DRC violations)
-│   ├── pnr_signoff.v          # Final netlist
-│   ├── drc_signoff.lyrdb      # KLayout DRC report (4,738 violations)
-│   ├── layout_extracted_signoff.cir # Extracted SPICE for LVS
-│   └── log.txt                # Signoff log showing LVS match
-└── out/                    # Synthesis outputs
+INFO : Congratulations! Netlists match.
+INFO : (17,018 devices and nets verified successfully)
 ```
 
-*Note: Confidential SCL foundry technology files (.drc, .lvs, .lydrc, .cdl, .tf, .lef, .lib, etc.) are excluded from this public repository.*
+The schematic side is generated by `scripts/gen_lvs_spice.py` (yosys was
+installed for it), which converts the gate-level Verilog to SPICE. Three
+passes are needed for KLayout's SPICE reader: union-find resolution of the
+658 `V<n> netA netB DC 0` elements yosys emits for `assign`, reconnection of
+12,776 power pins that a gate-level netlist leaves on `_NC`, and wrapping the
+top module in `.SUBCKT`/`.ENDS`.
+
+### Antenna: not applicable
+
+`verifyProcessAntenna` reports "no process antenna information found for this
+design", and this is not a gap to close: the vendor DRC deck `c1d_digital.drc`
+contains **zero** antenna rules, and the reference document never mentions
+antenna effects. There is no antenna check to pass in this PDK.
+
+### Not clean, and not fixed by this work
+
+- **Setup timing.** Innovus post-route STA with extracted parasitics reports
+  WNS **-3.016ns**, TNS -99.6ns, 107 violating reg2reg paths in the SS corner,
+  for the delivered layout. The repo previously claimed "STA clean — 0
+  setup/hold violations"; that report is degenerate (it shows
+  `Critical Path Length: 0.00` because PrimeTime never loaded the library — it
+  needs Library Compiler, which is not installed here).
+
+  Timing and DRC pull against each other on this PDK, and DRC won. Four
+  floorplans were built and signed off; only the loosest is clean under the
+  vendor deck:
+
+  | Floorplan | WNS (SS) | Vendor-deck DRC |
+  |---|---|---|
+  | 10% util, 40µm rows — **delivered** | -3.016ns | **0** |
+  | 20% util, 20µm rows | -2.902ns | 1 (metal2 spacing) |
+  | denser variant | -1.652ns | not signed off |
+
+  The 20% layout gains only 0.11ns and costs the clean result, so it was not
+  shipped — note Innovus called that layout clean too, the same blindness
+  described below. Closing 50 MHz needs a design change (over-constrained
+  synthesis, or pipelining `cam_rom`), not a floorplan tweak.
+- Timing-driven routing is *worse* here, not better: -2.534ns vs -2.163ns on
+  the same floorplan, and it crashed the router until disabled.
+
+---
+
+## What was wrong, and why Innovus could not see it
+
+Innovus reported **0 DRC** on a layout that KLayout signoff found **4,743**
+violations in. That gap was not a tool disagreement — it was the LEF abstract
+hiding geometry from Innovus, plus filler geometry that conflicts with the logic
+cells. Five independent defects, all verified by measurement rather than inference.
+
+### 1. `addFiller` omitted FILLER5
+
+`SITE CORE` is **0.01µm** wide, so placement leaves gaps at arbitrary 0.01µm
+multiples — measured: **3,947 residual gaps**, essentially all under 1µm (0.06,
+0.11, 0.22, 0.45, 0.88µm …). FILLER1–4 are 8/4/2/1µm and cannot tile a 0.45µm
+remainder. FILLER5 is 0.01µm — exactly one site — and exists for precisely this.
+Every previous iteration of this project used `{FILLER1 FILLER2 FILLER3 FILLER4}`.
+
+Logic cells have **zero boron overhang** (boron spans exactly 0..SIZE), so any
+residual gap breaks the P+ implant strip → 3,186 violations of 5.7.1.
+
+### 2. Pins were declared on metal1 only
+
+**309 of 310 signal pins already contain a via1 and a 2.5×2.5µm metal2 pad inside
+the cell** — 2.5×2.5 is exactly VIA12's metal enclosure, i.e. the cell already
+brings every pin up to metal2. Because the LEF advertised metal1 only, Innovus
+landed its *own* via1 on each pin, stacked ~0.05µm off the cell's existing via.
+The two cuts merge into a stepped polygon with 0.05µm and 1.55µm edges — exactly
+what rule 9.1.1 ("exact via width = 1.5µm") reports — and the same router vias sat
+over cell poly and contacts (9.4.1, 9.3.1).
+
+The vendor had done this correctly for exactly one pin, `NND801 IN8`, which
+confirms the intent rather than being an accident.
+
+Measured consequence: **no pin has a legal via1 site at all** (all 310 checked
+against the poly+1.2µm / contact+1.5µm halos). Vias are not meant to land on pins
+in this library; the metal2 ports are what make the cells routable.
+
+### 3. Filler and logic implant bands do not line up
+
+Fillers place boron at cell y 24.55–48.7 and nwell at 23.7–48.7, but the logic
+cells use different bands (INVR01 boron 1.65–41.25, AND201 2.30–43.15, DFCL11
+1.20–46.50). Where a filler abuts a logic cell the bands do not match, so the
+filler side protrudes as a **vertical finger as wide as the filler run**. A run
+narrower than 2.5µm fails 5.1.1 (boron width); narrower than 4.0µm of nwell
+(run + 1.5µm overhang) fails 1.1.1.
+
+So filling a sub-2.5µm gap only trades a *spacing* violation for a *width*
+violation. Measured proof: nwell violations of exactly 3.73µm and 3.02µm, i.e.
+filler runs of 2.23µm and 1.52µm.
+
+Fix: `specifyCellPad <cell> -left 300 -right 300` on every non-filler cell, so
+every gap is 0 or ≥6.0µm and the narrowest filler run is 3.0µm — 3.0µm of boron
+and 4.5µm of nwell.
+
+Not `setPlaceMode -place_detail_legalization_inst_gap`: that option caps out below
+what is needed and Innovus **silently discards it** ("IMPSP-2036: Ignoring ...
+value of 400 ... as the value is too large"). That cost two runs before it was
+noticed — the giveaway was a GDS byte-identical in size to the previous one.
+Padding also sets the filler run at each row end, which is bounded by the padding
+rather than a neighbour; at 200 SITEs that run was 2.0µm and produced the last
+width violations, measured at exactly 2.20µm of boron and 3.50µm of nwell.
+
+### 4. Power metal was under-declared
+
+`FILLER2` declares `PIN VSS` as (0,0)–(4,**5**) while its metal1 really runs to
+y=**9**; VDDCON/VSSCON do the same; `INVR04` has an entirely undeclared 2.5×10.5µm
+metal2 VDD strap. Such metal must be declared *as the power pin* — leaving it as an
+obstruction makes every VDD/VSS special wire short against it, and dropping it makes
+it invisible so signal routing comes within 1.7µm of it.
+
+The LEF generator now enforces and self-checks a hard invariant: **every piece of
+cell metal1/metal2 is either a declared net port or an obstruction** (verified: 0
+undeclared).
+
+### 5. Filler boron overhangs into its neighbour
+
+FILLER1–5 draw boron 0.2µm wider than their LEF SIZE (FILLER2 is 4.0µm wide, its
+boron spans 0..4.2µm). The overhang makes abutting fillers overlap rather than
+merely touch — but it also reaches 0.2µm into whatever cell sits to the right.
+
+1,580 of the placed instances have N+ diffusion within 0.9µm of a cell edge, and
+rule 5.5.1 wants boron at least 0.7µm from Ndiff. Where that diffusion is an nwell
+tap sitting inside the filler's boron band, the overhang closes the gap to
+0.55–0.65µm. Measured: FILLER2 at x=769.4–773.4 puts boron out to 773.6 while
+NND201's tap starts at 774.25 — a 0.65µm gap.
+
+`scripts/trim_filler_boron.py` clips filler boron (and boron_rev, which rule 6.1.1
+requires to overlap it exactly) to the cell boundary. Fillers then abut their
+neighbour edge-to-edge, which still merges into one implant strip, while the cell
+keeps its own 0.75µm clearance to its tap. Verified safe for LVS: pdiff
+(= diffusion ∩ boron) area is identical before and after, so the overhang never
+overlapped any diffusion and device extraction is unchanged.
+
+---
+
+## Rebuilding the LEF abstract
+
+`scripts/gen_signoff_lef.py` regenerates `lef/core_c1d_signoff.lef` from
+`gds/core_c1d.gds`:
+
+| | vendor `core_c1d.lef` | generated |
+|---|---|---|
+| macros with `metal2` OBS | 30 | 28 (rest are declared pin ports) |
+| macros with `via1` OBS | 27 | 66 |
+| pins with a `metal2` port | 1 | 312 |
+| off-grid RECTs | 1,489 | **0** |
+| undeclared cell metal | — | **0** |
+
+Obstructions are the **exact** cell geometry, not grown by the design rule —
+Innovus applies the tech-LEF spacing (metal1 1.5, metal2 1.7, via1 1.5) to
+blockages itself, and pre-growing them double-counts. An early attempt that grew
+them produced 18,907 routing violations. The one exception is `via1` OBS, which
+must add poly+1.2µm, contact+1.5µm and a 1.5µm diffusion-edge band, because those
+rules constrain a via cut against layers absent from the LEF entirely.
+
+---
+
+## Library cells excluded
+
+Running the vendor deck's rules on each cell of `core_c1d.gds` **standalone**
+shows these fail with no design geometry around them, so no placement or routing
+choice can clean them up. Both Genus and Innovus exclude them:
+
+| Rule | Cells |
+|---|---|
+| 9.4.1 via-to-poly < 1.2µm | AOI401, NND300, NND501, NOR701, OR3101, ORND01 |
+| 5.5.1 boron-to-Ndiff < 0.7µm | DFPC11, LTPR11 |
+
+Cost is negligible — ~75 instances were used, and post-synthesis timing is met
+with positive slack (the post-route violations noted above predate this change).
+
+> `gds/scl_drc.txt` is SCL's own DRC report on the cell library and shows zero
+> violations, but its `<top-cell>` is `FILLER1` — it checked one cell in isolation.
+> It is not evidence that the library is clean.
+
+---
+
+## Running the flow
+
+```sh
+./run_flow.csh all      # LEF rebuild -> Genus -> Innovus -> signoff DRC
+./run_flow.csh lef      # regenerate the LEF abstract only
+./run_flow.csh syn      # Genus only
+./run_flow.csh pnr      # Innovus only
+./run_flow.csh drc      # vendor-deck signoff DRC only
+```
+
+Confidential SCL decks are not in this repository; set `PDK_PRIVATE` to the
+directory holding `c1d_digital.drc` and `lvs_os_scl_c1d.lvs`.
+
+### KLayout on this host
+
+The KLayout `.deb` shipped in the PDK kit links against glibc 2.34; this host is
+RHEL 8 with glibc 2.28, which is why signoff previously had to run on a different
+machine. `scripts/klayout` wraps a local 0.28.17 build (the same version the PDK
+was validated against). It reproduces the reference `drc_signoff.lyrdb` **exactly**
+— all 12 categories, 4,743 items — on the pre-fix layout.
+
+`scripts/drc_check.py` is a ~10s Python port of the failing rules for iterating
+during PnR. It is a pre-check; the vendor deck is the authority.
+
+---
+
+## Known gaps
+
+- **Setup timing is not closed** at 50 MHz (WNS -3.016ns); see above.
+- `io_c1d.lef` contains 4,556 off-grid RECTs (vendor content) which Innovus reports
+  as IMPLF-82. No `io_c1d` macro is instantiated in this design, so they cannot
+  affect the layout.
+
+---
+
+## Repository layout
+
+```
+├── rtl/                        # Verilog RTL
+├── syn/synth_signoff.tcl       # Genus: no clock gating, dont-use list
+├── pnr/pnr_signoff_grade.tcl   # Innovus: min gap, FILLER5, signoff GDS
+├── scripts/gen_signoff_lef.py  # rebuild LEF abstract from cell GDS
+├── scripts/trim_filler_boron.py# clip FILLER boron to the cell boundary
+├── scripts/regen_nwell_rev.py  # rebuild nwell_rev from the finished nwell
+├── scripts/gen_lvs_spice.py    # gate-level Verilog -> SPICE for LVS
+├── scripts/drc_check.py        # fast local DRC pre-check
+├── scripts/klayout             # KLayout launcher for this host
+├── run_flow.csh                # end-to-end driver
+├── sta/run_pt.tcl              # PrimeTime STA
+└── lec/                        # logical equivalence
+```
+
+*Confidential SCL technology files (`.drc`, `.lvs`, `.lef`, `.lib`, `.cdl`, `.tf`)
+are excluded from this repository.*

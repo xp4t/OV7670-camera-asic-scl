@@ -1,0 +1,25 @@
+#!/bin/sh
+# KLayout launcher for this host.
+#
+# The KLayout .deb shipped with the PDK links against glibc 2.34; this host is
+# RHEL 8 with glibc 2.28, so that binary cannot run and signoff had to be done
+# on another machine. This wrapper points at a local 0.28.17 build (same version
+# the PDK was validated against) made from source with:
+#
+#   ./build.sh -qt5 -without-qtbinding -without-qt-uitools -without-qt-svg \
+#              -without-qt-multimedia -without-qt-designer -nolibgit2 -nopython \
+#              -ruby /usr/bin/ruby -rbinc <ruby-headers> -rbinc2 <ruby-headers> \
+#              -rblib /usr/lib64/libruby.so.2.5.9
+#
+# Ruby headers came from the AlmaLinux 8 ruby-devel RPM unpacked into
+# ~/klayout_cf/rbroot (ruby-devel is not in this host's enabled repos).
+#
+# Verified: reproduces the lab machine's drc_signoff.lyrdb exactly -- all 12
+# categories, 4743 items -- on the pre-fix pnr_signoff.gds.
+
+KL_ROOT=/home/rithwik/klayout_cf/klqt
+LD_LIBRARY_PATH="$KL_ROOT:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH
+QT_QPA_PLATFORM=offscreen
+export QT_QPA_PLATFORM
+exec "$KL_ROOT/klayout" "$@"
